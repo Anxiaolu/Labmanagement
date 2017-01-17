@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="labUnit" transaction-type="JTA">
+        <description>
+            Persistence unit for labmanagement
+        </description>
+
+        <jta-data-source>java:/jboss/labDS</jta-data-source>
+        <class>cn.edu.sdut.softlab.model.Item</class>
+        <class>cn.edu.sdut.softlab.model.Category</class>
+        <class>cn.edu.sdut.softlab.model.ItemAccount</class>
+        <class>cn.edu.sdut.softlab.model.Stuff</class>
+        <properties>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

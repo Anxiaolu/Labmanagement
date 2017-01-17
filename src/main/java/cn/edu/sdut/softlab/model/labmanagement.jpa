@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" pkg="cn.edu.sdut.softlab.model1" v="2.6" thm="PDarkColorScheme" sm="false" xs="false" id="_148005676541863" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:entity xre="false" compositePrimaryKeyClass="ItemPK" abs="false" class="Item" visibile="true" minimized="false" rootElement="_148005676541863" id="_148005676541964">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic optional="true" attribute-type="String" visibile="true" name="name" id="_148005676541969">
+                <jpa:bv/>
+                <jpa:column name="name" unique="false" nullable="true" insertable="true" updatable="true" table="item" length="128" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic optional="true" attribute-type="String" visibile="true" name="code" id="_148005676541970">
+                <jpa:bv/>
+                <jpa:column name="code" unique="false" nullable="true" insertable="true" updatable="true" table="item" length="32" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic optional="true" attribute-type="String" visibile="true" name="status" id="_148005676541971">
+                <jpa:bv/>
+                <jpa:column name="status" unique="false" nullable="true" insertable="true" updatable="true" table="item" length="64" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic optional="true" attribute-type="Integer" visibile="true" name="numTotal" id="_148005676541972">
+                <jpa:bv/>
+                <jpa:column name="num_total" unique="false" nullable="true" insertable="true" updatable="true" table="item" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic optional="true" attribute-type="java.util.Date" visibile="true" name="dateBought" id="_148005676541973">
+                <jpa:bv/>
+                <jpa:temporal>DATE</jpa:temporal>
+                <jpa:column name="date_bought" unique="false" nullable="true" insertable="true" updatable="true" table="item" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_148005676541965" connected-attribute-id="_148005676542078" visibile="true" name="categoryId" id="_148005676542074">
+                <jpa:join-column name="CATEGORY_ID" rc="ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:one-to-many orp="false" own="false" collection-type="java.util.List" connected-entity-id="_148005676541966" connected-attribute-id="_148005676542082" visibile="true" name="itemAccountCollection" id="_148005676542075"/>
+            <jpa:id attribute-type="Integer" visibile="true" name="id" id="_148005676541968">
+                <jpa:bv/>
+                <jpa:column name="id" unique="false" nullable="false" insertable="true" updatable="true" table="item" length="255" precision="0" scale="0"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="item"/>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="CategoryPK" abs="false" class="Category" visibile="true" minimized="false" rootElement="_148005676541863" id="_148005676541965">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic optional="true" attribute-type="String" visibile="true" name="name" id="_148005676542077">
+                <jpa:bv/>
+                <jpa:column name="name" unique="false" nullable="true" insertable="true" updatable="true" table="category" length="128" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:one-to-many orp="false" own="false" collection-type="java.util.List" connected-entity-id="_148005676541964" connected-attribute-id="_148005676542074" visibile="true" name="itemCollection" id="_148005676542078"/>
+            <jpa:id attribute-type="Integer" visibile="true" name="id" id="_148005676542076">
+                <jpa:bv/>
+                <jpa:column name="id" unique="false" nullable="false" insertable="true" updatable="true" table="category" length="255" precision="0" scale="0"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="category"/>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="ItemAccountPK" abs="false" class="ItemAccount" visibile="true" minimized="false" rootElement="_148005676541863" id="_148005676541966">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic optional="true" attribute-type="java.util.Date" visibile="true" name="timeCheck" id="_148005676542080">
+                <jpa:bv/>
+                <jpa:temporal>TIMESTAMP</jpa:temporal>
+                <jpa:column name="time_check" unique="false" nullable="true" insertable="true" updatable="true" table="item_account" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic optional="true" attribute-type="String" visibile="true" name="flag" id="_148005676542081">
+                <jpa:bv/>
+                <jpa:column name="flag" unique="false" nullable="true" insertable="true" updatable="true" table="item_account" length="32" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_148005676541964" connected-attribute-id="_148005676542075" visibile="true" name="itemId" id="_148005676542082">
+                <jpa:join-column name="ITEM_ID" rc="ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_148005676541967" connected-attribute-id="_148005676542188" visibile="true" name="stuffId" id="_148005676542083">
+                <jpa:join-column name="STUFF_ID" rc="ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Integer" visibile="true" name="id" id="_148005676542079">
+                <jpa:bv/>
+                <jpa:column name="id" unique="false" nullable="false" insertable="true" updatable="true" table="item_account" length="255" precision="0" scale="0"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="item_account"/>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="StuffPK" abs="false" class="Stuff" visibile="true" minimized="false" rootElement="_148005676541863" id="_148005676541967">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic optional="false" attribute-type="String" visibile="true" name="username" id="_148005676542085">
+                <jpa:bv/>
+                <jpa:column name="username" unique="false" nullable="false" insertable="true" updatable="true" table="stuff" length="32" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic optional="false" attribute-type="String" visibile="true" name="password" id="_148005676542086">
+                <jpa:bv/>
+                <jpa:column name="password" unique="false" nullable="false" insertable="true" updatable="true" table="stuff" length="32" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic optional="true" attribute-type="String" visibile="true" name="email" id="_148005676542087">
+                <jpa:bv/>
+                <jpa:column name="email" unique="false" nullable="true" insertable="true" updatable="true" table="stuff" length="256" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:one-to-many orp="false" own="false" collection-type="java.util.List" connected-entity-id="_148005676541966" connected-attribute-id="_148005676542083" visibile="true" name="itemAccountCollection" id="_148005676542188"/>
+            <jpa:id attribute-type="Integer" visibile="true" name="id" id="_148005676542084">
+                <jpa:bv/>
+                <jpa:column name="id" unique="false" nullable="false" insertable="true" updatable="true" table="stuff" length="255" precision="0" scale="0"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="stuff">
+            <jpa:unique-constraint>
+                <jpa:column-name>username</jpa:column-name>
+            </jpa:unique-constraint>
+        </jpa:table>
+    </jpa:entity>
+    <jpa:snp e="true" loc="BEFORE_PACKAGE">/**
+ * This file was generated by the JPA Modeler
+ */</jpa:snp>
+    <jpa:diagram>
+        <plane elementRef="_148005676541863">
+            <shape elementRef="_148005676541964">
+                <Bounds x="267.0" y="32.0" width="171.0" height="243.0"/>
+            </shape>
+            <shape elementRef="_148005676541965">
+                <Bounds x="502.0" y="339.0" width="144.0" height="133.0"/>
+            </shape>
+            <shape elementRef="_148005676541966">
+                <Bounds x="32.0" y="339.0" width="167.0" height="177.0"/>
+            </shape>
+            <shape elementRef="_148005676541967">
+                <Bounds x="267.0" y="580.0" width="171.0" height="177.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>

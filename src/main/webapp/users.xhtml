@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="template/template.xhtml">
+        <ui:define name="content">
+            <h:messages />
+            <h1>Users</h1>
+            <h:dataTable value="#{stuffs}" var="u">
+                <h:column>
+                    <f:facet name="header">
+                        Username
+                    </f:facet>
+                    <h:outputText value="#{u.username}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <h:outputText value="#{u.username}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        Password
+                    </f:facet>
+                    <h:outputText value="#{u.password}" />
+                </h:column>
+            </h:dataTable>
+            <h1>Add user</h1>
+            <h:form>
+                <table>
+                    <tr>
+                        <td>Username</td>
+                        <td><h:inputText value="#{userManager.newStuff.username}"/></td>
+                    </tr>
+
+                    <tr>
+                        <td>Password</td>
+                        <td><h:inputText value="#{userManager.newStuff.password}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td><h:inputText value="#{userManager.newStuff.email}"/></td>
+                    </tr>                            
+                    <tr>
+                        <td></td>
+                        <td><h:commandButton action="#{userManager.addStuff}" value="Add User" /></td>
+                    </tr>
+                </table>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
