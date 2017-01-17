@@ -41,55 +41,59 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "category")
 @XmlRootElement
+@NamedQueries({
+  @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
+  @NamedQuery(name = "Category.findById", query = "SELECT c FROM Category c WHERE c.id = :id"),
+  @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")})
 public class Category implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Basic(optional = false)
-	@Column(name = "id")
-	private Integer id;
-	@Size(max = 128)
-	@Column(name = "name")
-	private String name;
-	@OneToMany(mappedBy = "category")
-	private Set<Item> itemSet;
+  private static final long serialVersionUID = 1L;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Basic(optional = false)
+  @Column(name = "id")
+  private Integer id;
+  @Size(max = 128)
+  @Column(name = "name")
+  private String name;
+  @OneToMany(mappedBy = "category")
+  private Set<Item> itemSet;
 
-	public Category() {
-	}
+  public Category() {
+  }
 
-	public Category(Integer id) {
-		this.id = id;
-	}
+  public Category(Integer id) {
+    this.id = id;
+  }
 
-	public Integer getId() {
-		return id;
-	}
+  public Integer getId() {
+    return id;
+  }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	@XmlTransient
-	public Set<Item> getItemSet() {
-		return itemSet;
-	}
+  @XmlTransient
+  public Set<Item> getItemSet() {
+    return itemSet;
+  }
 
-	public void setItemSet(Set<Item> itemSet) {
-		this.itemSet = itemSet;
-	}
+  public void setItemSet(Set<Item> itemSet) {
+    this.itemSet = itemSet;
+  }
 
-	@Override
-	public String toString() {
-		return "cn.edu.sdut.softlab.model.Category[ id=" + id + " ]";
-	}
+  @Override
+  public String toString() {
+    return "cn.edu.sdut.softlab.model.Category[ id=" + id + " ]";
+  }
 
 }

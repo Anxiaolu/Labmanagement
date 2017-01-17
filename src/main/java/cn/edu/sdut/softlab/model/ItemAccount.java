@@ -43,77 +43,82 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "item_account")
 @XmlRootElement
+@NamedQueries({
+  @NamedQuery(name = "ItemAccount.findAll", query = "SELECT i FROM ItemAccount i"),
+  @NamedQuery(name = "ItemAccount.findById", query = "SELECT i FROM ItemAccount i WHERE i.id = :id"),
+  @NamedQuery(name = "ItemAccount.findByTimeCheck", query = "SELECT i FROM ItemAccount i WHERE i.timeCheck = :timeCheck"),
+  @NamedQuery(name = "ItemAccount.findByFlag", query = "SELECT i FROM ItemAccount i WHERE i.flag = :flag")})
 public class ItemAccount implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Basic(optional = false)
-	@Column(name = "id")
-	private Integer id;
-	@Column(name = "time_check")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date timeCheck;
-	@Size(max = 32)
-	@Column(name = "flag")
-	private String flag;
-	@JoinColumn(name = "item_id", referencedColumnName = "id")
-	@ManyToOne
-	private Item item;
-	@JoinColumn(name = "stuff_id", referencedColumnName = "id")
-	@ManyToOne
-	private Stuff stuff;
+  private static final long serialVersionUID = 1L;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Basic(optional = false)
+  @Column(name = "id")
+  private Integer id;
+  @Column(name = "time_check")
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date timeCheck;
+  @Size(max = 32)
+  @Column(name = "flag")
+  private String flag;
+  @JoinColumn(name = "item_id", referencedColumnName = "id")
+  @ManyToOne
+  private Item item;
+  @JoinColumn(name = "stuff_id", referencedColumnName = "id")
+  @ManyToOne
+  private Stuff stuff;
 
-	public ItemAccount() {
-	}
+  public ItemAccount() {
+  }
 
-	public ItemAccount(Integer id) {
-		this.id = id;
-	}
+  public ItemAccount(Integer id) {
+    this.id = id;
+  }
 
-	public Integer getId() {
-		return id;
-	}
+  public Integer getId() {
+    return id;
+  }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-	public Date getTimeCheck() {
-		return new Date(timeCheck.getTime());
-	}
+  public Date getTimeCheck() {
+    return new Date(timeCheck.getTime());
+  }
 
-	public void setTimeCheck(Date timeCheck) {
-		this.timeCheck = new Date(timeCheck.getTime());
-	}
+  public void setTimeCheck(Date timeCheck) {
+    this.timeCheck = new Date(timeCheck.getTime());
+  }
 
-	public String getFlag() {
-		return flag;
-	}
+  public String getFlag() {
+    return flag;
+  }
 
-	public void setFlag(String flag) {
-		this.flag = flag;
-	}
+  public void setFlag(String flag) {
+    this.flag = flag;
+  }
 
-	public Item getItem() {
-		return item;
-	}
+  public Item getItem() {
+    return item;
+  }
 
-	public void setItem(Item item) {
-		this.item = item;
-	}
+  public void setItem(Item item) {
+    this.item = item;
+  }
 
-	public Stuff getStuff() {
-		return stuff;
-	}
+  public Stuff getStuff() {
+    return stuff;
+  }
 
-	public void setStuff(Stuff stuff) {
-		this.stuff = stuff;
-	}
+  public void setStuff(Stuff stuff) {
+    this.stuff = stuff;
+  }
 
-	@Override
-	public String toString() {
-		return "cn.edu.sdut.softlab.model.ItemAccount[ id=" + id + " ]";
-	}
+  @Override
+  public String toString() {
+    return "cn.edu.sdut.softlab.model.ItemAccount[ id=" + id + " ]";
+  }
 
 }

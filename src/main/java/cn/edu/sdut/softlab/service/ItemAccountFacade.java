@@ -27,8 +27,8 @@ import javax.inject.Named;
 @Named("itemAccount")
 public class ItemAccountFacade extends AbstractFacade<ItemAccount> {
 
-	public ItemAccountFacade() {
-		super(ItemAccount.class);
-	}
+  public ItemAccountFacade() {
+    super(ItemAccount.class);
+  }
 
 }

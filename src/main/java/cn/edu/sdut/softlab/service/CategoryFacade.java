@@ -34,7 +34,6 @@ public class CategoryFacade extends AbstractFacade<Category> {
 	public CategoryFacade() {
 		super(Category.class);
 	}
-<<<<<<< HEAD
 	
 	public int categoryCount() {
 		return count();
@@ -52,7 +51,4 @@ public class CategoryFacade extends AbstractFacade<Category> {
 	}
 	
 	
-=======
-
->>>>>>> 48fc7a60e4434116734759e46bbbaa9c408c1032
 }

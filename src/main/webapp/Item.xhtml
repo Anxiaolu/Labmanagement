@@ -4,7 +4,6 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
-	<meta charset="utf-8"/>
 <h:head>
 	<title>物品管理</title>
 	<link href="assets/css/table-style.css" rel="stylesheet"
@@ -12,13 +11,12 @@
 	<link href="assets/css/form-elements.css" rel="stylesheet"
 		type="css/text" />
 	<link href="assets/css/style.css" rel="stylesheet" type="css/text" />
-	
 </h:head>
 <ui:composition template="template/template.xhtml">
 	<ui:define name="content">
 		<h:messages />
 		<h1>Items</h1>
-		<h:dataTable value="#{itemManager.allItem}" var="i"
+		<p:dataTable value="#{itemManager.allItem}" var="i"
 			headerClass="header" cellspacing="5" cellpadding="10"
 			columnClasses="column" styleClass="table">
 			<h:column>
@@ -33,7 +31,7 @@
                     </f:facet>
 				<h:outputText value="#{i.category.name}" />
 			</h:column>
-		</h:dataTable>
+		</p:dataTable>
 		<h:dataTable value="#{categoryManager.allCategory}" var="c"
 			headerClass="header" styleClass="table">
 			<h:column>
@@ -67,8 +65,7 @@
 							value="#{itemaddmanager.newItem.category}">
 							<f:selectItem itemLabel="--选择分类--" />
 							<f:selectItems value="#{categoryManager.allCategoryName}" />
-						</h:selectOneMenu>
-					</td>
+						</h:selectOneMenu></td>
 				</tr>
 				<tr>
 					<td>物品总量</td>
@@ -82,10 +79,6 @@
 					<td></td>
 					<td><h:commandButton action="#{itemaddmanager.addItem}"
 							value="Add Item" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><></td>
 				</tr>
 			</table>
 		</h:form>
