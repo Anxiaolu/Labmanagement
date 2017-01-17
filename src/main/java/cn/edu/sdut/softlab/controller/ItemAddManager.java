@@ -69,7 +69,7 @@ public class ItemAddManager {
 
 	/**
 	 * 根据
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -82,14 +82,13 @@ public class ItemAddManager {
 	 * Category c = (Category) it.next(); catename.add(c.getName()); } return
 	 * catename; }
 	 */
-
 	public Category findCategoryByName(String name) {
 		Category category = new Category();
 		category = null;
 		List<Category> categories = categoryservice.findAllCategory();
 		Iterator it = categories.iterator();
 		while (it.hasNext()) {
-			Category c = (Category) it;
+			Category c = (Category) it.next();
 			if (c.getName().equals(name)) {
 				category = c;
 			}
@@ -97,9 +96,30 @@ public class ItemAddManager {
 		return category;
 	}
 
+	// /**
+	// * 根据所给的名字返回对应的分类id
+	// *
+	// * @param name
+	// * @return 上级分类的id
+	// */
+	// @Produces
+	// @Named("findcategoryidbyname")
+	// @RequestScoped
+	// public Integer findCategoryIDByName(String name) {
+	// List<Category> categorylist = categoryservice.findAll(Category.class);
+	// Iterator<Category> it = categorylist.iterator();
+	// while (it.hasNext()) {
+	// Category ct = (Category) it;
+	// if (ct.getClass().equals(name)) {
+	// return ct.getId();
+	// }
+	// }
+	// return null;
+	// }
+
 	/**
 	 * 向数据库中添加前台页面输入的Item对象
-	 * 
+	 *
 	 * @return 重定向到当前页面（刷新页面）
 	 * @throws Exception
 	 */
@@ -108,13 +128,22 @@ public class ItemAddManager {
 			utx.begin();
 			// addCategory();
 			newItem.setDateBought(new Date());
-			newItem.setCategory(this.findCategoryByName(newItem.getName()));
+			// newItem.setCategory(newCategory);
 			itemService.create(newItem);
 			logger.log(Level.INFO, "Added {0}", newItem);
 			return "/Item.xhtml?faces-redirect=true";
 		} finally {
+
 			utx.commit();
 		}
+	}
+
+	public String addItemTest() throws Exception {
+		utx.begin();
+		System.out.println("数据库里面：" + findCategoryByName("111").hashCode());
+		System.out.println("前台页面：" + newItem.getCategory().hashCode());
+		utx.commit();
+		return null;
 	}
 
 }

@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.edu.sdut.softlab.controller;
 
 import cn.edu.sdut.softlab.model.Stuff;
 import cn.edu.sdut.softlab.service.StuffFacade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,53 +29,131 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-
+import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
+import javax.ws.rs.NotFoundException;
 
 @Named("userManager")
 @RequestScoped
 public class StuffManagerImpl implements StuffManager {
 
-  @Inject
-  private transient Logger logger;
-  @Inject
-  StuffFacade userService;
+	@Inject
+	private transient Logger logger;
 
-  @Inject
-  private UserTransaction utx;
+	@Inject
+	StuffFacade userService;
 
-  private Stuff newStuff = new Stuff();
+	@Inject
+	Credentials credentials;
 
-  public Stuff getNewStuff() {
-    return newStuff;
-  }
+	@Inject
+	private UserTransaction utx;
 
-  public void setNewStuff(Stuff newStuff) {
-    this.newStuff = newStuff;
-  }
+	@Inject
+	EntityManager em;
 
-  @Override
-  @Produces
-  @Named
-  @RequestScoped
-  public List<Stuff> getStuffs() throws Exception {
-    try {
-      utx.begin();
-      return userService.findAll(Stuff.class);
-    } finally {
-      utx.commit();
-    }
-  }
+	private Stuff currenstuff = null;
 
-  @Override
-  public String addStuff() throws Exception {
-    try {
-      utx.begin();
-      userService.create(newStuff);
-      logger.log(Level.INFO, "Added {0}", newStuff);
-      return "/users.xhtml?faces-redirect=true";
-    } finally {
-      utx.commit();
-    }
-  }
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	//作为前台修改信息的暂存变量
+	private String currentstuffname;
+	private String email;
+	private String password;
+
+	public String getCurrentstuffname() {
+		return currentstuffname;
+	}
+
+	public void setCurrentstuffname(String currentstuffname) {
+		this.currentstuffname = currentstuffname;
+	}
+
+	private Stuff newStuff = new Stuff();
+
+	public Stuff getNewStuff() {
+		return newStuff;
+	}
+
+	public void setNewStuff(Stuff newStuff) {
+		this.newStuff = newStuff;
+	}
+
+	@Override
+	@Produces
+	@Named
+	@RequestScoped
+	public List<Stuff> getStuffs() throws Exception {
+		try {
+			utx.begin();
+			return userService.findAll(Stuff.class);
+		} finally {
+			utx.commit();
+		}
+	}
+
+	@Override
+	public String addStuff() throws Exception {
+		try {
+			utx.begin();
+			userService.create(newStuff);
+			logger.log(Level.INFO, "Added {0}", newStuff);
+			return "/users.xhtml?faces-redirect=true";
+		} finally {
+			utx.commit();
+		}
+	}
+
+	public List<String> getAllStuffName() throws Exception {
+		List<String> stuffnamelist = new ArrayList<>();
+		List<Stuff> stufflist = getStuffs();
+		for (Stuff s : stufflist) {
+			stuffnamelist.add(s.getUsername());
+		}
+		return stuffnamelist;
+	}
+
+	public String removeStuff() throws Exception {
+		Stuff temporstuff = userService.findByName(credentials.getName());
+		if (temporstuff != null) {
+			currenstuff = temporstuff;
+		}
+		utx.begin();
+		userService.remove(currenstuff);
+		// em.remove(em.merge(currenstuff));
+		// em.flush();
+		utx.commit();
+		logger.log(Level.INFO, "Added {0}", newStuff);
+		return "/userdelect.xhtml?faces-redirect=true";
+	}
+
+	public String editStuff() throws Exception {
+		utx.begin();
+		Stuff updatestuff = userService.findByName(currentstuffname);
+		if (updatestuff == null)
+			throw new NotFoundException();
+		if (updatestuff.getUsername() != null)
+			updatestuff.setUsername(currentstuffname);
+		if (updatestuff.getPassword() != null)
+			updatestuff.setPassword(password);
+		if (updatestuff.getEmail() != null)
+			updatestuff.setEmail(email);
+		em.merge(updatestuff);
+		utx.commit();
+		return "/Stuff_query.xhtml?faces-redirect=true";
+	}
 }

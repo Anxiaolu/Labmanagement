@@ -50,21 +50,30 @@ public class LoginController implements Serializable {
 
 	/**
 	 * 处理登录逻辑.
+	 * @return 
 	 */
-	public void login() {
+	public String login() throws Exception{
 		Stuff stuff = stuffService.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
+		Stuff stuff2 = stuffService.findByName(credentials.getUsername());
 		if (stuff != null) {
 			currentUser = stuff;
 			facesContext.addMessage(null, new FacesMessage("Welcome, " + currentUser.getUsername()));
 		}
+		if (stuff2 == null) {
+			facesContext.addMessage(null, new FacesMessage("Wrong Message!"));
+			return null;
+		}
+		return  "/home.xhtml?faces-redirect=true";
 	}
 
 	/**
 	 * 处理退出登录逻辑.
+	 * @return 
 	 */
-	public void logout() {
+	public String logout() {
 		facesContext.addMessage(null, new FacesMessage("Goodbye, " + currentUser.getUsername()));
 		currentUser = null;
+		return  "/index.xhtml?faces-redirect=true";
 	}
 
 	/**

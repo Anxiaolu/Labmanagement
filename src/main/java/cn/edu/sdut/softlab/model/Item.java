@@ -21,6 +21,7 @@ package cn.edu.sdut.softlab.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.faces.bean.ManagedBean;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Su Baochen
  */
+@ManagedBean(name="Item") 
 @Entity
 @Table(name = "item")
 @XmlRootElement
@@ -53,7 +55,8 @@ import javax.xml.bind.annotation.XmlTransient;
   @NamedQuery(name = "Item.findByCode", query = "SELECT i FROM Item i WHERE i.code = :code"),
   @NamedQuery(name = "Item.findByStatus", query = "SELECT i FROM Item i WHERE i.status = :status"),
   @NamedQuery(name = "Item.findByNumTotal", query = "SELECT i FROM Item i WHERE i.numTotal = :numTotal"),
-  @NamedQuery(name = "Item.findByDateBought", query = "SELECT i FROM Item i WHERE i.dateBought = :dateBought")})
+  @NamedQuery(name = "Item.findByDateBought", query = "SELECT i FROM Item i WHERE i.dateBought = :dateBought"),
+  @NamedQuery(name = "Item.findByNameAndCode", query = "SELECT i FROM Item i WHERE i.dateBought = :dateBought and i.code= :code")})
 public class Item implements Serializable {
 
   private static final long serialVersionUID = 1L;

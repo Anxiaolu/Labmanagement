@@ -3,7 +3,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="../template/ui.xhtml">
 <h:head>
 	<title>物品管理</title>
@@ -17,7 +17,6 @@
 		<h1>Items</h1>
 		<h:dataTable value="#{itemManager.allItem}" var="i"
 			headerClass="header" columnClasses="column" styleClass="table">
-			<h:column value="#{itemManager.Item.rowIndex+1}"/>
 			<h:column>
 				<f:facet name="header">
                         物品名称

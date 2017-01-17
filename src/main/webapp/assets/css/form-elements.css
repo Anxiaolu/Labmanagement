@@ -45,11 +45,14 @@ textarea:-ms-input-placeholder, textarea.form-control:-ms-input-placeholder { co
 input[type="text"]::-webkit-input-placeholder, input[type="password"]::-webkit-input-placeholder, 
 textarea::-webkit-input-placeholder, textarea.form-control::-webkit-input-placeholder { color: #888; }
 
+table{
+    width: 100%;
+}
 
-
-button {
+input[type="submit"] {
 	height: 50px;
-    margin: 0;
+    width: 100%;
+    margin: 10px 0 0;
     padding: 0 20px;
     vertical-align: middle;
     background: #4aaf51 !important;
@@ -65,10 +68,10 @@ button {
     -o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
 }
 
-button:hover { opacity: 0.6; color: #fff; }
+input[type="submit"]:hover { opacity: 0.6; color: #fff; }
 
-button:active { outline: 0; opacity: 0.6; color: #fff; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
+input[type="submit"]:active { outline: 0; opacity: 0.6; color: #fff; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
 
-button:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }
+input[type="submit"]:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }
 
-button:active:focus, button.active:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }
+input[type="submit"]:active:focus, input[type="submit"]:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }

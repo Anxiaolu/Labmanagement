@@ -1,0 +1,117 @@
+
+<!--
+Copyright 2017 huanlu.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>PrimeFaces and Boostrap test</title>
+	<!-- CSS -->
+	<link rel="stylesheet"
+		href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500" />
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet"
+		href="assets/font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="assets/css/form-elements.css" />
+	<link rel="stylesheet" href="assets/css/style.css" />
+	<script src="assets/" />
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+</h:head>
+<h:body>
+
+	<!-- Top content -->
+	<div class="top-content">
+
+		<div class="inner-bg">
+			<div class="container">
+				<h:messages />
+				<p:dataTable var="i" value="#{itemManager.allItem}" rows="5">
+					<f:facet name="header">Item List</f:facet>
+					<p:column headerText="ItemName">#{i.name}</p:column>
+					<p:column headerText="Status">#{i.status}</p:column>
+					<p:column headerText="Code">#{i.code}</p:column>
+					<p:column headerText="NumTotal">#{i.numTotal}</p:column>
+					<p:column headerText="Category">#{i.category}</p:column>>
+                                </p:dataTable>
+				<div class="row">
+					<div class="col-sm-8 col-sm-offset-2 text">
+						<h1>
+							<strong>314Lab</strong> Management
+						</h1>
+						<div class="description">
+							<p>Power of All of 314!</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<p:menubar>
+						
+					</p:menubar>
+					<p:dataTable>
+
+					</p:dataTable>
+				</div>
+				<div class="row">
+					<h:form>
+						<p>名称</p>
+						<h:selectOneMenu title="item" id="item"
+                                                        value="#{itemManager.currentItem.name}">
+                                                        <f:selectItem itemLabel="--选择物品--" />
+                                                        <f:selectItems value="#{itemManager.allItem}"
+                                                                var="Item" itemValue="#{Item}"
+                                                                itemLabel="#{Item.name}" />
+                                                </h:selectOneMenu>
+						<br />
+						<h:inputText value="#{itemManager.currentItem.status}" />
+						<br />
+						<h:inputText value="#{itemManager.currentItem.numTotal}" />
+						<br />
+						<h:inputText value="#{itemManager.currentItem.code}" />
+						<br />
+						
+						<h:commandButton action="#{itemManager.editItem}" value="Edit Item"/>
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Javascript -->
+	<script src="assets/js/jquery-1.11.1.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/jquery.backstretch.min.js"></script>
+	<script src="assets/js/scripts.js"></script>
+
+	<!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+</h:body>
+</html>
+
+

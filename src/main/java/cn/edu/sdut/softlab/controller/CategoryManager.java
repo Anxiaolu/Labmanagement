@@ -116,27 +116,13 @@ public class CategoryManager {
 			utx.commit();
 		}
 	}
-
-	/**
-	 * 根据所给的名字返回对应的分类id
-	 * 
-	 * @param name
-	 * @return 上级分类的id
-	 */
-
-	/*@Produces
-	@Named("findcategoryidbyname")
-	@RequestScoped
-	public Integer findCategoryIDByName(String name) {
-		List<Category> categorylist = categoryService.findAll(Category.class);
-		Iterator<Category> it = categorylist.iterator();
-		while (it.hasNext()) {
-			Category ct = (Category) it.next();
-			if (ct.getClass().equals(name)) {
-				return ct.getId();
-			}
-		}
-		return null;
-	}*/
-
+        
+        public List<Integer> getAllCategoryId() throws Exception{
+            List<Integer> cateid = new ArrayList<>();
+            List<Category> categorys = getAllCategory();
+            for(Category c:categorys){
+                cateid.add(c.getId());
+            }
+            return cateid;
+        }
 }

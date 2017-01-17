@@ -21,6 +21,7 @@ package cn.edu.sdut.softlab.service;
 import cn.edu.sdut.softlab.model.Category;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,5 +51,18 @@ public class CategoryFacade extends AbstractFacade<Category> {
 		return findAll(Category.class);
 	}
 	
+        public Category findCategoryByName(String name) {
+        Category category = new Category();
+        category = null;
+        List<Category> categories = this.findAllCategory();
+        Iterator it = categories.iterator();
+        while (it.hasNext()) {
+            Category c = (Category) it;
+            if (c.getName().equals(name)) {
+                category = c;
+            }
+        }
+        return category;
+    }
 	
 }

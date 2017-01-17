@@ -133,17 +133,6 @@ public abstract class AbstractFacade<T> {
     });
     return findOrEmpty(() -> query.getSingleResult());
   }
-
-  
-  
-  
-/*
-  public Optional<T> findSingleIdByNameQuery(String namedQueryName,){
-	  
-	  return null;
-  }*/
-  
-  
   
   /**
    * 根据给定的namedQuery返回记录结果集.

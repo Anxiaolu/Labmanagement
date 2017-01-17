@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.edu.sdut.softlab.service;
 
 import cn.edu.sdut.softlab.model.Item;
@@ -40,4 +39,18 @@ public class ItemFacade extends AbstractFacade<Item> {
 		parameters.put("category", category);
 		return findSingleByNamedQuery("item.findBynameAndParentId", parameters, Item.class).get();
 	}
+	
+	public Item findByName(String name) {
+		Map<String, Object> parameters = new HashMap<>(0);
+		parameters.put("name", name);
+		return findSingleByNamedQuery("Item.findByName", parameters, Item.class).get();
+	}
+
+	public Item findByNameAndCode(String name, String code) {
+		Map<String, Object> parameters = new HashMap<>(0);
+		parameters.put("name", name);
+		parameters.put("code", code);
+		return findSingleByNamedQuery("Item.findByNameAndCode", parameters, Item.class).get();
+	}
+
 }
