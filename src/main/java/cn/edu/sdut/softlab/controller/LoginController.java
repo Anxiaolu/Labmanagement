@@ -35,52 +35,51 @@ import javax.inject.Named;
 @Named("login")
 public class LoginController implements Serializable {
 
-  private static final long serialVersionUID = 7965455427888195913L;
+	private static final long serialVersionUID = 7965455427888195913L;
 
-  @Inject
-  private Credentials credentials;
+	@Inject
+	private Credentials credentials;
 
-  @Inject
-  StuffFacade stuffService;
-  
-  @Inject
-  FacesContext facesContext;
+	@Inject
+	StuffFacade stuffService;
 
-  private Stuff currentUser = null;
+	@Inject
+	FacesContext facesContext;
 
-  /**
-   * 处理登录逻辑.
-   */
-  public void login() {
-    Stuff stuff = stuffService.findByUsernameAndPassword(
-            credentials.getUsername(), credentials.getPassword());
-    if (stuff != null) {
-      currentUser = stuff;
-      facesContext.addMessage(null, new FacesMessage("Welcome, " + currentUser.getUsername()));
-    }
-  }
+	private Stuff currentUser = null;
 
-  /**
-   * 处理退出登录逻辑.
-   */
-  public void logout() {
-    facesContext.addMessage(null, new FacesMessage("Goodbye, " + currentUser.getUsername()));
-    currentUser = null;
-  }
+	/**
+	 * 处理登录逻辑.
+	 */
+	public void login() {
+		Stuff stuff = stuffService.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
+		if (stuff != null) {
+			currentUser = stuff;
+			facesContext.addMessage(null, new FacesMessage("Welcome, " + currentUser.getUsername()));
+		}
+	}
 
-  /**
-   * 判断用户是否登录.
-   *
-   * @return true：已经登录；false：没有登录
-   */
-  public boolean isLoggedIn() {
-    return currentUser != null;
-  }
+	/**
+	 * 处理退出登录逻辑.
+	 */
+	public void logout() {
+		facesContext.addMessage(null, new FacesMessage("Goodbye, " + currentUser.getUsername()));
+		currentUser = null;
+	}
 
-  @Produces
-  @LoggedIn
-  public Stuff getCurrentUser() {
-    return currentUser;
-  }
+	/**
+	 * 判断用户是否登录.
+	 *
+	 * @return true：已经登录；false：没有登录
+	 */
+	public boolean isLoggedIn() {
+		return currentUser != null;
+	}
+
+	@Produces
+	@LoggedIn
+	public Stuff getCurrentUser() {
+		return currentUser;
+	}
 
 }

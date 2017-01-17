@@ -30,14 +30,14 @@ import javax.inject.Named;
 @Named("stuff")
 public class StuffFacade extends AbstractFacade<Stuff> {
 
-  public StuffFacade() {
-    super(Stuff.class);
-  }
-  
-  public Stuff findByUsernameAndPassword(String username,String password) {
-    Map<String,Object> parameters = new HashMap<>(0);
-    parameters.put("username", username);
-    parameters.put("password", password);
-    return findSingleByNamedQuery("Stuff.findByUsernameAndPassword", parameters, Stuff.class).get();
-  }
+	public StuffFacade() {
+		super(Stuff.class);
+	}
+
+	public Stuff findByUsernameAndPassword(String username, String password) {
+		Map<String, Object> parameters = new HashMap<>(0);
+		parameters.put("username", username);
+		parameters.put("password", password);
+		return findSingleByNamedQuery("Stuff.findByUsernameAndPassword", parameters, Stuff.class).get();
+	}
 }

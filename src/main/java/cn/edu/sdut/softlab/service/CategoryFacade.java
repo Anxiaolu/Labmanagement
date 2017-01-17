@@ -20,6 +20,10 @@ package cn.edu.sdut.softlab.service;
 
 import cn.edu.sdut.softlab.model.Category;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.ejb.Stateless;
 import javax.inject.Named;
 
@@ -27,8 +31,28 @@ import javax.inject.Named;
 @Named("category")
 public class CategoryFacade extends AbstractFacade<Category> {
 
-  public CategoryFacade() {
-    super(Category.class);
-  }
+	public CategoryFacade() {
+		super(Category.class);
+	}
+<<<<<<< HEAD
+	
+	public int categoryCount() {
+		return count();
+	}
+	
+	public Category findCategoryByNameAndId(int id,String name) {
+		Map<String,Object> parameters = new HashMap<>(0);
+	    parameters.put("id", id);
+	    parameters.put("name", name);
+	    return findSingleByNamedQuery("Stuff.findByUsernameAndPassword", parameters, Category.class).get();
+	}
+	
+	public List<Category> findAllCategory(){
+		return findAll(Category.class);
+	}
+	
+	
+=======
 
+>>>>>>> 48fc7a60e4434116734759e46bbbaa9c408c1032
 }

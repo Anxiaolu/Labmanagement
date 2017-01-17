@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	<meta charset="utf-8"/>
+<h:head>
+	<title>物品管理</title>
+	<link href="assets/css/table-style.css" rel="stylesheet"
+		type="css/text" />
+	<link href="assets/css/form-elements.css" rel="stylesheet"
+		type="css/text" />
+	<link href="assets/css/style.css" rel="stylesheet" type="css/text" />
+
+</h:head>
+
+		<h:messages />
+		<h1>Items</h1>
+		<p:dataTable value="#{itemManager.allItem}" var="i"
+			headerClass="header" cellspacing="5" cellpadding="10"
+			columnClasses="column" styleClass="table">
+			<h:column>
+				<f:facet name="header">
+                        物品名称
+                    </f:facet>
+				<h:outputText value="#{i.name}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+                        上级目录
+                    </f:facet>
+				<h:outputText value="#{i.category.name}" />
+			</h:column>
+		</p:dataTable>
+		<h:dataTable value="#{categoryManager.allCategory}" var="c"
+			headerClass="header" styleClass="table">
+			<h:column>
+				<f:facet name="header">
+                        分类ID
+                    </f:facet>
+				<h:outputText value="#{c.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+                        分类名称
+                    </f:facet>
+				<h:outputText value="#{c.name}" />
+			</h:column>
+		</h:dataTable>
+		<h1>Add Item</h1>
+		<h:form>
+			<table>
+				<tr>
+					<td>物品名称</td>
+					<td><h:inputText value="#{itemaddmanager.newItem.name}" /></td>
+				</tr>
+
+				<tr>
+					<td>物品状态</td>
+					<td><h:inputText value="#{itemaddmanager.newItem.status}" /></td>
+				</tr>
+				<tr>
+					<td>上级目录</td>
+					<td><p:selectOneMenu
+							value="#{itemaddmanager.newItem.category}" converter="category" car="c">
+							<f:selectItem itemLabel="--选择分类--" />
+							<f:selectItems value="#{categoryManager.allCategory}"
+								var="category" itemLabel="#{category.name}"
+								itemValue="#{category}" />
+						</p:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td>物品总量</td>
+					<td><h:inputText value="#{itemaddmanager.newItem.numTotal}" /></td>
+				</tr>
+				<tr>
+					<td>物品简介</td>
+					<td><h:inputText value="#{itemaddmanager.newItem.code}" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><h:commandButton action="#{itemaddmanager.addItem}"
+							value="Add Item" /></td>
+				</tr>
+			</table>
+		</h:form>
+		<h:form>
+			<h:inputText value="#{categoryManager.newcategory.name}" />
+			<h:commandButton action="#{categoryManager.addCategory}"
+				value="Add Category" />
+		</h:form>
+	
+</html>

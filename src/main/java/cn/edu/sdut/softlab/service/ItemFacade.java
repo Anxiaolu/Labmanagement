@@ -20,6 +20,9 @@ package cn.edu.sdut.softlab.service;
 
 import cn.edu.sdut.softlab.model.Item;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ejb.Stateless;
 import javax.inject.Named;
 
@@ -27,8 +30,14 @@ import javax.inject.Named;
 @Named("item")
 public class ItemFacade extends AbstractFacade<Item> {
 
-  public ItemFacade() {
-    super(Item.class);
-  }
+	public ItemFacade() {
+		super(Item.class);
+	}
 
+	public Item findByItemnameAndParentId(String name, int category) {
+		Map<String, Object> parameters = new HashMap<>(0);
+		parameters.put("name", name);
+		parameters.put("category", category);
+		return findSingleByNamedQuery("item.findBynameAndParentId", parameters, Item.class).get();
+	}
 }

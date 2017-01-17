@@ -1,0 +1,10 @@
+.header{
+	font-weight: bold;
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    background-color:lightblue;
+}
+.table1{
+	float:left;
+}

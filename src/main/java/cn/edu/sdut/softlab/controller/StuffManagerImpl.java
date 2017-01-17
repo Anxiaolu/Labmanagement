@@ -36,24 +36,25 @@ import javax.transaction.UserTransaction;
 @RequestScoped
 public class StuffManagerImpl implements StuffManager {
 
-  @Inject
-  private transient Logger logger;
-  @Inject
-  StuffFacade userService;
+	@Inject
+	private transient Logger logger;
+	@Inject
+	StuffFacade userService;
 
-  @Inject
-  private UserTransaction utx;
+	@Inject
+	private UserTransaction utx;
 
-  private Stuff newStuff = new Stuff();
+	private Stuff newStuff = new Stuff();
 
-  public Stuff getNewStuff() {
-    return newStuff;
-  }
+	public Stuff getNewStuff() {
+		return newStuff;
+	}
 
-  public void setNewStuff(Stuff newStuff) {
-    this.newStuff = newStuff;
-  }
+	public void setNewStuff(Stuff newStuff) {
+		this.newStuff = newStuff;
+	}
 
+<<<<<<< HEAD
   @Override
   @Produces
   @Named
@@ -61,21 +62,35 @@ public class StuffManagerImpl implements StuffManager {
   public List<Stuff> getStuffs() throws Exception {
     try {
       utx.begin();
-      return userService.findAll();
+      return userService.findAll(Stuff.class);
     } finally {
       utx.commit();
     }
   }
+=======
+	@Override
+	@Produces
+	@Named
+	@RequestScoped
+	public List<Stuff> getStuffs() throws Exception {
+		try {
+			utx.begin();
+			return userService.findAll();
+		} finally {
+			utx.commit();
+		}
+	}
+>>>>>>> 48fc7a60e4434116734759e46bbbaa9c408c1032
 
-  @Override
-  public String addStuff() throws Exception {
-    try {
-      utx.begin();
-      userService.create(newStuff);
-      logger.log(Level.INFO, "Added {0}", newStuff);
-      return "/users.xhtml?faces-redirect=true";
-    } finally {
-      utx.commit();
-    }
-  }
+	@Override
+	public String addStuff() throws Exception {
+		try {
+			utx.begin();
+			userService.create(newStuff);
+			logger.log(Level.INFO, "Added {0}", newStuff);
+			return "/users.xhtml?faces-redirect=true";
+		} finally {
+			utx.commit();
+		}
+	}
 }

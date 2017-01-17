@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../template/ui.xhtml">
+<h:head>
+	<title>物品管理</title>
+	<link href="assets/css/table-style.css" rel="stylesheet" />
+	<link href="assets/css/form-elements.css" rel="stylesheet" />
+	<link href="assets/css/style.css" rel="stylesheet" type="css/text" />
+</h:head>
+<ui:composition template="template/template.xhtml">
+	<ui:define name="content">
+		<h:messages />
+		<h1>Items</h1>
+		<h:dataTable value="#{itemManager.allItem}" var="i"
+			headerClass="header" columnClasses="column" styleClass="table">
+			<h:column value="#{itemManager.Item.rowIndex+1}"/>
+			<h:column>
+				<f:facet name="header">
+                        物品名称
+                    </f:facet>
+				<h:outputText value="#{i.name}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+                        上级目录
+                    </f:facet>
+				<h:outputText value="#{i.category.name}" />
+			</h:column>
+		</h:dataTable>
+	</ui:define>
+</ui:composition>
+</html>

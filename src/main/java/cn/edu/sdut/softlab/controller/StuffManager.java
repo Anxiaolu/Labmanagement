@@ -24,20 +24,20 @@ import java.util.List;
 
 public interface StuffManager {
 
-  /**
-   * 获得所有用户列表.
-   *
-   * @return 所有用户列表
-   * @throws Exception
-   */
-  List<Stuff> getStuffs() throws Exception;
+	/**
+	 * 获得所有用户列表.
+	 *
+	 * @return 所有用户列表
+	 * @throws Exception
+	 */
+	List<Stuff> getStuffs() throws Exception;
 
-  /**
-   * 新增用户.
-   *
-   * @return 返回用户列表页面
-   * @throws Exception
-   */
-  String addStuff() throws Exception;
+	/**
+	 * 新增用户.
+	 *
+	 * @return 返回用户列表页面
+	 * @throws Exception
+	 */
+	String addStuff() throws Exception;
 
 }

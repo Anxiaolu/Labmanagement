@@ -42,96 +42,90 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "stuff")
 @XmlRootElement
-@NamedQueries({
-  @NamedQuery(name = "Stuff.findAll", query = "SELECT s FROM Stuff s"),
-  @NamedQuery(name = "Stuff.findById", query = "SELECT s FROM Stuff s WHERE s.id = :id"),
-  @NamedQuery(name = "Stuff.findByUsername", query = "SELECT s FROM Stuff s WHERE s.username = :username"),
-  @NamedQuery(name = "Stuff.findByPassword", query = "SELECT s FROM Stuff s WHERE s.password = :password"),
-  @NamedQuery(name = "Stuff.findByEmail", query = "SELECT s FROM Stuff s WHERE s.email = :email"),
-  @NamedQuery(name = "Stuff.findByUsernameAndPassword", query = "SELECT s FROM Stuff s WHERE s.username = :username and s.password = :password")})
 public class Stuff implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "id")
-  private Integer id;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 32)
-  @Column(name = "username")
-  private String username;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 32)
-  @Column(name = "password")
-  private String password;
-  // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="电子邮件无效")//if the field contains email address consider using this annotation to enforce field validation
-  @Size(max = 256)
-  @Column(name = "email")
-  private String email;
-  @OneToMany(mappedBy = "stuff")
-  private Set<ItemAccount> itemAccountSet;
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Basic(optional = false)
+	@Column(name = "id")
+	private Integer id;
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 32)
+	@Column(name = "username")
+	private String username;
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 32)
+	@Column(name = "password")
+	private String password;
+	// @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+	// message="电子邮件无效")//if the field contains email address consider using
+	// this annotation to enforce field validation
+	@Size(max = 256)
+	@Column(name = "email")
+	private String email;
+	@OneToMany(mappedBy = "stuff")
+	private Set<ItemAccount> itemAccountSet;
 
-  public Stuff() {
-  }
+	public Stuff() {
+	}
 
-  public Stuff(Integer id) {
-    this.id = id;
-  }
+	public Stuff(Integer id) {
+		this.id = id;
+	}
 
-  public Stuff(Integer id, String username, String password) {
-    this.id = id;
-    this.username = username;
-    this.password = password;
-  }
+	public Stuff(Integer id, String username, String password) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+	}
 
-  public Integer getId() {
-    return id;
-  }
+	public Integer getId() {
+		return id;
+	}
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-  public String getUsername() {
-    return username;
-  }
+	public String getUsername() {
+		return username;
+	}
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-  public String getPassword() {
-    return password;
-  }
+	public String getPassword() {
+		return password;
+	}
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-  public String getEmail() {
-    return email;
-  }
+	public String getEmail() {
+		return email;
+	}
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-  @XmlTransient
-  public Set<ItemAccount> getItemAccountSet() {
-    return itemAccountSet;
-  }
+	@XmlTransient
+	public Set<ItemAccount> getItemAccountSet() {
+		return itemAccountSet;
+	}
 
-  public void setItemAccountSet(Set<ItemAccount> itemAccountSet) {
-    this.itemAccountSet = itemAccountSet;
-  }
+	public void setItemAccountSet(Set<ItemAccount> itemAccountSet) {
+		this.itemAccountSet = itemAccountSet;
+	}
 
-
-  @Override
-  public String toString() {
-    return "cn.edu.sdut.softlab.model.Stuff[ id=" + id + " ]";
-  }
+	@Override
+	public String toString() {
+		return "cn.edu.sdut.softlab.model.Stuff[ id=" + id + " ]";
+	}
 
 }
