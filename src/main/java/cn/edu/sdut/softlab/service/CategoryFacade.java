@@ -15,13 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.edu.sdut.softlab.service;
 
 import cn.edu.sdut.softlab.model.Category;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,37 +30,35 @@ import javax.inject.Named;
 @Named("category")
 public class CategoryFacade extends AbstractFacade<Category> {
 
-	public CategoryFacade() {
-		super(Category.class);
-	}
-	
-	public int categoryCount() {
-		return count();
-	}
-	
-	public Category findCategoryByNameAndId(int id,String name) {
-		Map<String,Object> parameters = new HashMap<>(0);
-	    parameters.put("id", id);
-	    parameters.put("name", name);
-	    return findSingleByNamedQuery("Stuff.findByUsernameAndPassword", parameters, Category.class).get();
-	}
-	
-	public List<Category> findAllCategory(){
-		return findAll(Category.class);
-	}
-	
-        public Category findCategoryByName(String name) {
-        Category category = new Category();
-        category = null;
-        List<Category> categories = this.findAllCategory();
-        Iterator it = categories.iterator();
-        while (it.hasNext()) {
-            Category c = (Category) it;
-            if (c.getName().equals(name)) {
-                category = c;
-            }
-        }
-        return category;
+    public CategoryFacade() {
+        super(Category.class);
     }
-	
+
+    public int categoryCount() {
+        return count();
+    }
+
+    public Category findCategoryByNameAndId(int id, String name) {
+        Map<String, Object> parameters = new HashMap<>(0);
+        parameters.put("id", id);
+        parameters.put("name", name);
+        return findSingleByNamedQuery("Category.findByIdAndName", parameters, Category.class).get();
+    }
+
+    public List<Category> findAllCategory() {
+        return findAll(Category.class);
+    }
+
+    public Category findCategoryByName(String name) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("name", name);
+        return findSingleByNamedQuery("Category.findByName", parameters, Category.class).get();
+    }
+
+    public Category findCategoryById(int id) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", id);
+        return findSingleByNamedQuery("Category.findById", parameters, Category.class).get();
+    }
+
 }

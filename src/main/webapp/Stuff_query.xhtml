@@ -65,18 +65,11 @@ limitations under the License.
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<p:menubar>
-
-					</p:menubar>
-					<p:dataTable>
-
-					</p:dataTable>
-				</div>
+				
 				<div class="row">
 					<h:form>
 						<p>名称</p>
-						<h:selectOneMenu title="item" id="item"
+						<h:selectOneMenu title="stuff_edit" id="stuff_edit"
 							value="#{userManager.currentstuffname}">
 							<f:selectItem itemLabel="--选择物品--" />
 							<f:selectItems value="#{userManager.allStuffName}" var="StuffName"
@@ -86,9 +79,10 @@ limitations under the License.
 						<h:inputText value="#{userManager.password}" /><br/>
 						<h:inputText value="#{userManager.email}" />
 						<br />
-						<h:commandButton action="#{userManager.editStuff}"
+						<h:commandButton action="#{userManager.editStuff}" id="submit_edit"
 							value="Edit Stuff" />
 					</h:form>
+					<p:blockUI block="stuff_edit" trigger="submit_edit" />
 				</div>
 			</div>
 		</div>

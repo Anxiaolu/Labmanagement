@@ -56,7 +56,7 @@
                     <tr>
                         <td>上级目录</td>
                         <td><h:selectOneMenu id="category_fk"
-                                     value="#{itemaddmanager.newItem.category}" converter="#{categoryConverterBean}" title="category">
+                                     value="#{itemaddmanager.newItem.category.id}" converter="#{categoryConverterBean}" title="category">
                                 <f:selectItem itemLabel="--选择分类--" />
                                 <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
                             </h:selectOneMenu>

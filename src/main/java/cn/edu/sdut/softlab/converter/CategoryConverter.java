@@ -16,41 +16,70 @@
 package cn.edu.sdut.softlab.converter;
 
 import cn.edu.sdut.softlab.model.Category;
+import cn.edu.sdut.softlab.service.CategoryFacade;
+
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.inject.Inject;
 
 /**
  *
  * @author huanlu
  */
 @ManagedBean(name = "categoryConverterBean")
-@FacesConverter(value = "categoryConverter")
-public class CategoryConverter implements Converter {
+@FacesConverter(forClass = Category.class, value = "categoryConverter")
+public class CategoryConverter implements Converter, Serializable {
 
-	@PersistenceContext()
-	private transient EntityManager em;
+	private static final long serialVersionUID = 1L;
+
+	// private static final Logger logger =
+	// Logger.getLogger(CategoryConverter.class.getName());
+
+	@Inject
+	CategoryFacade categoryservice;
+
+	
+	//@PersistenceContext() private transient EntityManager em;
+	 
+
+	@Inject
+	FacesContext facescontext;
 
 	@Override
-	public Object getAsObject(FacesContext ctx, UIComponent component, String value) {
+	public Object getAsObject(FacesContext ctx, UIComponent component, String value) throws ConverterException {
 		// This will return the actual object representation
 		// of your Category using the value (in your case 52)
 		// returned from the client side
-		return em.find(Category.class, new Integer(value));
+		// return em.find(Category.class, new Integer(value));
+
+		//return em.find(Category.class, new Integer(value));
+
+		if (!value.equals("") && value != null) {
+			//int Catid = Integer.parseInt(value);
+                        String Catname = value;
+			System.out.println("前台返回的实体名字" + Catname);
+			Category category = categoryservice.findCategoryByName(Catname);
+			System.out.println("查询到的实体：" + category.getId() + "，名字：" + category.getName());
+                        int categoryid = category.getId();
+			return categoryid;
+		}
+		return null;
 	}
 
+      
 	@Override
 	public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-		// This will return view-friendly output for the dropdown menu
-		// return ((Category) o).getId().toString();
-
-		if (!(o instanceof Category))
+		if (o instanceof Category)
+			return String.valueOf(((Category) o));
+		else {
 			return null;
-		return String.valueOf(((Category) o).getId());
+		}
 	}
 
 }

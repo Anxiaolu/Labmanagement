@@ -33,13 +33,6 @@ public class ItemFacade extends AbstractFacade<Item> {
 		super(Item.class);
 	}
 
-	public Item findByItemnameAndParentId(String name, int category) {
-		Map<String, Object> parameters = new HashMap<>(0);
-		parameters.put("name", name);
-		parameters.put("category", category);
-		return findSingleByNamedQuery("item.findBynameAndParentId", parameters, Item.class).get();
-	}
-	
 	public Item findByName(String name) {
 		Map<String, Object> parameters = new HashMap<>(0);
 		parameters.put("name", name);
@@ -53,4 +46,11 @@ public class ItemFacade extends AbstractFacade<Item> {
 		return findSingleByNamedQuery("Item.findByNameAndCode", parameters, Item.class).get();
 	}
 
+	public void setItemStatus(Item item, String status) {
+		for (Item i : this.findAll(Item.class)) {
+			if (i.getId().equals(item.getId())) {
+				i.setStatus(status);
+			}
+		}
+	}
 }

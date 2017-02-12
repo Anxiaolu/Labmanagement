@@ -1,6 +1,8 @@
 package cn.edu.sdut.softlab.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -12,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.UserTransaction;
 import javax.ws.rs.NotFoundException;
 
+import cn.edu.sdut.softlab.model.Category;
 import cn.edu.sdut.softlab.model.Item;
 import cn.edu.sdut.softlab.service.CategoryFacade;
 import cn.edu.sdut.softlab.service.ItemFacade;
@@ -42,7 +45,63 @@ public class ItemManager {
 
 	private String name;
 
-	// 从前台获取暂存的物品
+	//前台修改物品信息暂存
+	private String itemname;
+	private String code;
+	//private String status;
+	private Date dateBought;
+	private Integer numTotal;
+	public String getItemname() {
+		return itemname;
+	}
+
+	public void setItemname(String itemname) {
+		this.itemname = itemname;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	/*public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}*/
+
+	public Date getDateBought() {
+		return dateBought;
+	}
+
+	public void setDateBought(Date dateBought) {
+		this.dateBought = dateBought;
+	}
+
+	public Integer getNumTotal() {
+		return numTotal;
+	}
+
+	public void setNumTotal(Integer numTotal) {
+		this.numTotal = numTotal;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	private Category category;
+	
+	// 从前台获取待删物品
 	private Item currentItem = new Item();
 
 	public Item getCurrentItem() {
@@ -81,6 +140,7 @@ public class ItemManager {
 	 * @return 生成的name属性集合
 	 * @throws Exception
 	 */
+	@RequestScoped
 	public List<String> getAllItemName() throws Exception {
 		List<String> itemname = new ArrayList<>();
 		List<Item> itemlist = getAllItem();
@@ -95,6 +155,7 @@ public class ItemManager {
 	 * @return 指定url地址（对相应页面的刷新）
 	 * @throws Exception
 	 */
+	@RequestScoped
 	public String removeItem() throws Exception {
 		Item temporitem = itemService.findByName(credentials.getName());
 		if (temporitem != null) {
@@ -114,22 +175,54 @@ public class ItemManager {
 	 * @return 指定url地址（对相应页面的刷新）
 	 * @throws Exception
 	 */
+	@RequestScoped
 	public String editItem() throws Exception {
 		utx.begin();
-		Item updateitem = itemService.findByName(currentItem.getName());
+		Item updateitem = itemService.findByName(this.getItemname());
 		em.clear();
 		if (updateitem == null)
 			throw new NotFoundException();
-		if (currentItem.getName() != null)
-			updateitem.setName(currentItem.getName());
-		if (currentItem.getCode() != null)
-			updateitem.setCode(currentItem.getCode());
-		if (currentItem.getStatus() != null)
-			updateitem.setStatus(currentItem.getStatus());
-		if (currentItem.getNumTotal() != null)
-			updateitem.setNumTotal(currentItem.getNumTotal());
+		if (updateitem.getName() != null)
+			updateitem.setName(this.getItemname());
+		if (updateitem.getCode() != null) 
+			updateitem.setCode(this.getCode());
+		if (updateitem.getNumTotal() != null) 
+			updateitem.setNumTotal(this.getNumTotal());
+		if (updateitem.getDateBought() != null) 
+			updateitem.setDateBought(Calendar.getInstance().getTime());
+		if (updateitem.getCategory() != null) 
+			updateitem.setCategory(this.getCategory());
+		if (updateitem.getNumTotal() >= 0) {
+			updateitem.setStatus("AVALIABLE");
+		}else{
+			updateitem.setStatus("NOT_AVALIABLE");
+		}
 		em.merge(updateitem);
 		utx.commit();
 		return "/Item_query.xhtml?faces-redirect=true";
+	}
+	
+	@RequestScoped
+	public List<Item> getAvaliableItem() throws Exception{
+		List<Item> items = this.getAllItem();
+		List<Item> itemsavb = new ArrayList<>(); 
+		for(Item i:items){
+			if (i.getStatus().equals("AVALIABLE")) {
+				itemsavb.add(i);
+			}
+		}
+		return itemsavb;
+	}
+	
+	@RequestScoped
+	public List<Item> getNotAvaliableItem() throws Exception{
+		List<Item> items = this.getAllItem();
+		List<Item> itemsnoavb = new ArrayList<>(); 
+		for(Item i:items){
+			if (i.getStatus().equals("NOT_AVALIABLE")) {
+				itemsnoavb.add(i);
+			}
+		}
+		return itemsnoavb;
 	}
 }

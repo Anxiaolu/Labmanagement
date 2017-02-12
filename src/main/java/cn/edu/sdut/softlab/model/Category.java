@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.edu.sdut.softlab.model;
 
 import java.io.Serializable;
@@ -39,95 +38,129 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Su Baochen
  */
-@ManagedBean(name ="Category")
+@ManagedBean(name = "Category")
 @Entity
 @Table(name = "category")
 @XmlRootElement
 @NamedQueries({
-  @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
-  @NamedQuery(name = "Category.findById", query = "SELECT c FROM Category c WHERE c.id = :id"),
-  @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")})
+    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
+    ,
+  @NamedQuery(name = "Category.findById", query = "SELECT c FROM Category c WHERE c.id = :id")
+    ,
+  @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")
+    ,
+  @NamedQuery(name = "Category.findByIdAndName", query = "SELECT c FROM Category c WHERE c.name = :name and c.id = :id"),})
 public class Category implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "id")
-  private Integer id;
-  @Size(max = 128)
-  @Column(name = "name")
-  private String name;
-  @OneToMany(mappedBy = "category")
-  private Set<Item> itemSet;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 128)
+    @Column(name = "name")
+    private String name;
+    @OneToMany(mappedBy = "category")
+    private Set<Item> itemSet;
 
-  public Category() {
-  }
+    public Category() {
+    }
 
-  public Category(Integer id) {
-    this.id = id;
-  }
+    public Category(Integer id) {
+        this.id = id;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  @XmlTransient
-  public Set<Item> getItemSet() {
-    return itemSet;
-  }
+    @XmlTransient
+    public Set<Item> getItemSet() {
+        return itemSet;
+    }
 
-  public void setItemSet(Set<Item> itemSet) {
-    this.itemSet = itemSet;
-  }
+    public void setItemSet(Set<Item> itemSet) {
+        this.itemSet = itemSet;
+    }
 
-  @Override
-  public String toString() {
-    return "cn.edu.sdut.softlab.model.Category[ id=" + id + " ]";
-  }
-  
-//  @Override
-//public boolean equals(Object obj) {
-//    if (this == obj)
-//        return true;
-//    if (obj == null)
-//        return false;
-//    if (getClass() != obj.getClass())
-//        return false;
-//    Category other = (Category) obj;
-//    if (id == null) {
-//        if (other.id != null)
-//            return false;
-//    } else if (!id.equals(other.id))
-//        return false;
-//    if (name == null) {
-//        if (other.name != null)
-//            return false;
-//    } else if (!name.equals(other.name))
-//        return false;
-//    return true;
-//}
-//        
-//  @Override
-//    public int hashCode() {
-//    final int prime = 31;
-//    int result = 1;
-//    result = prime * result + ((id == null) ? 0 : id.hashCode());
-//    result = prime * result
-//            + ((name == null) ? 0 : name.hashCode());
-//    return result;   
-//    }
+    @Override
+    public String toString() {
+        return "cn.edu.sdut.softlab.model.Category[ id=" + id + " ]";
+    }
+
+    /*@Override
+public boolean equals(Object obj) {
+    if (this == obj)
+        return true;
+    if (obj == null)
+        return false;
+    if (getClass() != obj.getClass())
+        return false;
+    Category other = (Category) obj;
+    if (id == null) {
+        if (other.id != null)
+            return false;
+    } else if (!id.equals(other.id))
+        return false;
+    if (name == null) {
+        if (other.name != null)
+            return false;
+    } else if (!name.equals(other.name))
+        return false;
+    return true;
+}   */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result
+                + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (!getClass().isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+
+        final Category other = (Category) obj;
+
+        if (id == null) {
+
+            if (other.getId() != null) {
+                return false;
+            }
+
+        } else if (!id.equals(other.getId())) {
+            return false;
+        }
+
+        return true;
+
+    }
 
 }

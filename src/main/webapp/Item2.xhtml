@@ -16,7 +16,7 @@
 
     </h:head>
 
-    <h:messages />
+    <h:messages showSummary="flase" showDetail="true"/>
     <h1>Items</h1>
     <p:dataTable value="#{itemManager.allItem}" var="i"
                  styleClass="table">
@@ -63,9 +63,11 @@
             <tr>
                 <td>上级目录</td>
                 <td><h:selectOneMenu title="category_fk" id="category"
-                                     value="#{categoryManager.newcategory.id}" converter="#{categoryConverterBean}">
-                        <f:selectItem itemLabel="--选择分类--" />                    
-                        <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
+                                     value="#{itemaddmanager.newItem.category}" converter="#{categoryConverterBean}">
+                        <f:selectItem itemLabel="--选择分类--" />
+                       <!--  <f:selectItem itemValue="001" itemLabel="001"/>
+                         <f:selectItem itemValue="002" itemLabel="002"/> -->
+                        <f:selectItems value="#{categoryManager.allCategoryName}" var="Category" itemValue="#{Category}" itemLabel="#{Category}"/>
                     </h:selectOneMenu>
                 </td>
             </tr>
