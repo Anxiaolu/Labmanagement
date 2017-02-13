@@ -29,28 +29,28 @@ import javax.inject.Named;
 @Named("item")
 public class ItemFacade extends AbstractFacade<Item> {
 
-	public ItemFacade() {
-		super(Item.class);
-	}
+    public ItemFacade() {
+        super(Item.class);
+    }
 
-	public Item findByName(String name) {
-		Map<String, Object> parameters = new HashMap<>(0);
-		parameters.put("name", name);
-		return findSingleByNamedQuery("Item.findByName", parameters, Item.class).get();
-	}
+    public Item findByName(String name) {
+        Map<String, Object> parameters = new HashMap<>(0);
+        parameters.put("name", name);
+        return findSingleByNamedQuery("Item.findByName", parameters, Item.class).get();
+    }
 
-	public Item findByNameAndCode(String name, String code) {
-		Map<String, Object> parameters = new HashMap<>(0);
-		parameters.put("name", name);
-		parameters.put("code", code);
-		return findSingleByNamedQuery("Item.findByNameAndCode", parameters, Item.class).get();
-	}
+    public Item findByNameAndCode(String name, String code) {
+        Map<String, Object> parameters = new HashMap<>(0);
+        parameters.put("name", name);
+        parameters.put("code", code);
+        return findSingleByNamedQuery("Item.findByNameAndCode", parameters, Item.class).get();
+    }
 
-	public void setItemStatus(Item item, String status) {
-		for (Item i : this.findAll(Item.class)) {
-			if (i.getId().equals(item.getId())) {
-				i.setStatus(status);
-			}
-		}
-	}
+    public void setItemStatus(Item item, String status) {
+        for (Item i : this.findAll(Item.class)) {
+            if (i.getId().equals(item.getId())) {
+                i.setStatus(status);
+            }
+        }
+    }
 }

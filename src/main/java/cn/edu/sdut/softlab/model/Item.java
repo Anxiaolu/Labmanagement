@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cn.edu.sdut.softlab.model;
 
 import java.io.Serializable;
@@ -44,122 +43,129 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Su Baochen
  */
-@ManagedBean(name="Item") 
+@ManagedBean(name = "Item")
 @Entity
 @Table(name = "item")
 @XmlRootElement
 @NamedQueries({
-  @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
-  @NamedQuery(name = "Item.findById", query = "SELECT i FROM Item i WHERE i.id = :id"),
-  @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :name"),
-  @NamedQuery(name = "Item.findByCode", query = "SELECT i FROM Item i WHERE i.code = :code"),
-  @NamedQuery(name = "Item.findByStatus", query = "SELECT i FROM Item i WHERE i.status = :status"),
-  @NamedQuery(name = "Item.findByNumTotal", query = "SELECT i FROM Item i WHERE i.numTotal = :numTotal"),
-  @NamedQuery(name = "Item.findByDateBought", query = "SELECT i FROM Item i WHERE i.dateBought = :dateBought"),
+    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
+    ,
+  @NamedQuery(name = "Item.findById", query = "SELECT i FROM Item i WHERE i.id = :id")
+    ,
+  @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :name")
+    ,
+  @NamedQuery(name = "Item.findByCode", query = "SELECT i FROM Item i WHERE i.code = :code")
+    ,
+  @NamedQuery(name = "Item.findByStatus", query = "SELECT i FROM Item i WHERE i.status = :status")
+    ,
+  @NamedQuery(name = "Item.findByNumTotal", query = "SELECT i FROM Item i WHERE i.numTotal = :numTotal")
+    ,
+  @NamedQuery(name = "Item.findByDateBought", query = "SELECT i FROM Item i WHERE i.dateBought = :dateBought")
+    ,
   @NamedQuery(name = "Item.findByNameAndCode", query = "SELECT i FROM Item i WHERE i.dateBought = :dateBought and i.code= :code")})
 public class Item implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "id")
-  private Integer id;
-  @Size(max = 128)
-  @Column(name = "name")
-  private String name;
-  @Size(max = 32)
-  @Column(name = "code")
-  private String code;
-  @Size(max = 64)
-  @Column(name = "status")
-  private String status;
-  @Column(name = "num_total")
-  private Integer numTotal;
-  @Column(name = "date_bought")
-  @Temporal(TemporalType.DATE)
-  private Date dateBought;
-  @JoinColumn(name = "category_id", referencedColumnName = "id")
-  @ManyToOne
-  private Category category;
-  @OneToMany(mappedBy = "item")
-  private Set<ItemAccount> itemAccountSet;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 128)
+    @Column(name = "name")
+    private String name;
+    @Size(max = 32)
+    @Column(name = "code")
+    private String code;
+    @Size(max = 64)
+    @Column(name = "status")
+    private String status;
+    @Column(name = "num_total")
+    private Integer numTotal;
+    @Column(name = "date_bought")
+    @Temporal(TemporalType.DATE)
+    private Date dateBought;
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @ManyToOne
+    private Category category;
+    @OneToMany(mappedBy = "item")
+    private Set<ItemAccount> itemAccountSet;
 
-  public Item() {
-  }
+    public Item() {
+    }
 
-  public Item(Integer id) {
-    this.id = id;
-  }
+    public Item(Integer id) {
+        this.id = id;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public String getCode() {
-    return code;
-  }
+    public String getCode() {
+        return code;
+    }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-  public String getStatus() {
-    return status;
-  }
+    public String getStatus() {
+        return status;
+    }
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-  public Integer getNumTotal() {
-    return numTotal;
-  }
+    public Integer getNumTotal() {
+        return numTotal;
+    }
 
-  public void setNumTotal(Integer numTotal) {
-    this.numTotal = numTotal;
-  }
+    public void setNumTotal(Integer numTotal) {
+        this.numTotal = numTotal;
+    }
 
-  public Date getDateBought() {
-    return new Date(dateBought.getTime());
-  }
+    public Date getDateBought() {
+        return dateBought;
+    }
 
-  public void setDateBought(Date dateBought) {
-    this.dateBought = new Date(dateBought.getTime());
-  }
+    public void setDateBought(Date dateBought) {
+        this.dateBought = dateBought;
+    }
 
-  public Category getCategory() {
-    return category;
-  }
+    public Category getCategory() {
+        return category;
+    }
 
-  public void setCategory(Category category) {
-    this.category = category;
-  }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
-  @XmlTransient
-  public Set<ItemAccount> getItemAccountSet() {
-    return itemAccountSet;
-  }
+    @XmlTransient
+    public Set<ItemAccount> getItemAccountSet() {
+        return itemAccountSet;
+    }
 
-  public void setItemAccountSet(Set<ItemAccount> itemAccountSet) {
-    this.itemAccountSet = itemAccountSet;
-  }
+    public void setItemAccountSet(Set<ItemAccount> itemAccountSet) {
+        this.itemAccountSet = itemAccountSet;
+    }
 
-  @Override
-  public String toString() {
-    return "cn.edu.sdut.softlab.model.Item[ id=" + id + " ]";
-  }
+    @Override
+    public String toString() {
+        return "cn.edu.sdut.softlab.model.Item[ id=" + id + " ]";
+    }
 
 }

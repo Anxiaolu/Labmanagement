@@ -54,30 +54,35 @@
             <h:form>
                 <table>
                     <tr>
+                        <td>物品名称</td>
+                        <td><h:inputText value="#{itemaddmanager.newItem.name}" id="itemname" required="true" requiredMessage="您还没有给您的物品定名字呢！">
+                                <f:converter converterId="itemAddConverterBean" for="itemname"/>
+                                <f:validator validatorId="itemAddValidator" for="itemname"/>
+                            </h:inputText>
+                            <h:message for="itemname"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>上级目录</td>
-                        <td><h:selectOneMenu id="category_fk"
-                                     value="#{itemaddmanager.newItem.category.id}" converter="#{categoryConverterBean}" title="category">
+                        <td><h:selectOneMenu id="category_fk" value="#{itemaddmanager.newItem.category.id}" 
+                                             converter="#{categoryConverterBean}" title="category" required="true"
+                                             requiredMessage="请选择上级分类" >
                                 <f:selectItem itemLabel="--选择分类--" />
                                 <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
                             </h:selectOneMenu>
                         </td>
                     </tr>
                     <tr>
-                        <td>物品名称</td>
-                        <td><h:inputText value="#{itemaddmanager.newItem.name}" /></td>
-                    </tr>
-
-                    <tr>
                         <td>物品状态</td>
-                        <td><h:inputText value="#{itemaddmanager.newItem.status}" /></td>
+                        <td><h:inputText value="#{itemaddmanager.newItem.status}" required="true" requiredMessage=""/></td>
                     </tr>
                     <tr>
                         <td>物品总量</td>
-                        <td><h:inputText value="#{itemaddmanager.newItem.numTotal}" /></td>
+                        <td><h:inputText value="#{itemaddmanager.newItem.numTotal}" required="true" requiredMessage="您还没有说有多少个啊！"/></td>
                     </tr>
                     <tr>
                         <td>物品简介</td>
-                        <td><h:inputText value="#{itemaddmanager.newItem.code}" /></td>
+                        <td><h:inputText value="#{itemaddmanager.newItem.code}" required="true" requiredMessage="简单介绍一下物品来源吧！"/></td>
                     </tr>
                     <tr>
                         <td></td>

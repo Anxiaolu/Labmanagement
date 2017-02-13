@@ -53,12 +53,6 @@ public class CategoryConverter implements Converter, Serializable {
 
 	@Override
 	public Object getAsObject(FacesContext ctx, UIComponent component, String value) throws ConverterException {
-		// This will return the actual object representation
-		// of your Category using the value (in your case 52)
-		// returned from the client side
-		// return em.find(Category.class, new Integer(value));
-
-		//return em.find(Category.class, new Integer(value));
 
 		if (!value.equals("") && value != null) {
 			//int Catid = Integer.parseInt(value);

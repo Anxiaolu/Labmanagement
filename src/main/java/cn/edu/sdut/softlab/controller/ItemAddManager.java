@@ -1,6 +1,5 @@
 package cn.edu.sdut.softlab.controller;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,89 +21,85 @@ import cn.edu.sdut.softlab.service.ItemFacade;
 @RequestScoped
 public class ItemAddManager {
 
-	@Inject
-	private transient Logger logger;
+    @Inject
+    private transient Logger logger;
 
-	@Inject
-	EntityManager em;
+    @Inject
+    EntityManager em;
 
-	@Inject
-	UserTransaction utx;
+    @Inject
+    UserTransaction utx;
 
-	@Inject
-	ItemFacade itemService;
+    @Inject
+    ItemFacade itemService;
 
-	@Inject
-	CategoryFacade categoryservice;
+    @Inject
+    CategoryFacade categoryservice;
 
-	private String categoryname;
+    private String categoryname;
 
-	public String getCategoryname() {
-		return categoryname;
-	}
+    public String getCategoryname() {
+        return categoryname;
+    }
 
-	public void setCategoryname(String categoryname) {
-		this.categoryname = categoryname;
-	}
+    public void setCategoryname(String categoryname) {
+        this.categoryname = categoryname;
+    }
 
-	private Item newItem = new Item();
+    private Item newItem = new Item();
 
-	public Item getNewItem() {
-		if (newItem.getCategory() == null) {
-			newItem.setCategory(new Category());
-		}
-		return newItem;
-	}
+    public Item getNewItem() {
+        if (newItem.getCategory() == null) {
+            newItem.setCategory(new Category());
+        }
+        return newItem;
+    }
 
-	public void setNewItem(Item newItem) {
-		this.newItem = newItem;
-	}
+    public void setNewItem(Item newItem) {
+        this.newItem = newItem;
+    }
 
-	@Produces
-	@Named
-	@RequestScoped
-	public List<Category> AllCategory() throws Exception {
-		return categoryservice.findAll(Category.class);
-	}
+    @Produces
+    @Named
+    @RequestScoped
+    public List<Category> AllCategory() throws Exception {
+        return categoryservice.findAll(Category.class);
+    }
 
+    public Category findCategoryByName(String name) {
+        Category category = new Category();
+        category = null;
+        List<Category> categories = categoryservice.findAllCategory();
+        Iterator it = categories.iterator();
+        while (it.hasNext()) {
+            Category c = (Category) it.next();
+            if (c.getName().equals(name)) {
+                category = c;
+            }
+        }
+        return category;
+    }
 
-	public Category findCategoryByName(String name) {
-		Category category = new Category();
-		category = null;
-		List<Category> categories = categoryservice.findAllCategory();
-		Iterator it = categories.iterator();
-		while (it.hasNext()) {
-			Category c = (Category) it.next();
-			if (c.getName().equals(name)) {
-				category = c;
-			}
-		}
-		return category;
-	}
-
-
-	/**
-	 * 向数据库中添加前台页面输入的Item对象
-	 *
-	 * @return 重定向到当前页面（刷新页面）
-	 * @throws Exception
-	 */
-	public String addItem() throws Exception {
-		try {
-                    utx.begin();
-                    if (!newItem.getName().equals("")) {
-                        newItem.setDateBought(new Date());
-                    //newItem.setCategory(categoryservice.findCategoryByName(categoryname));
-                    itemService.create(newItem);
-                    logger.log(Level.INFO, "Added {0}", newItem);
-                    return "/Item.xhtml?faces-redirect=true";
-                    }
-                    else{
-                        return "/Error.xhtml?faces-redirect=true";
-                    }
-		} finally {
-			utx.commit();
-		}
-	}
-
+    /**
+     * 向数据库中添加前台页面输入的Item对象
+     *
+     * @return 重定向到当前页面（刷新页面）
+     * @throws Exception
+     */
+    public String addItem() throws Exception {
+        if (!newItem.getName().equals("")) {
+            try {
+                utx.begin();
+                itemService.create(newItem);
+                logger.log(Level.INFO, "Added {0}", newItem);
+                return "/Item.xhtml?faces-redirect=true";
+            }
+            finally {
+                utx.commit();
+            }
+        } 
+        else {
+            return "/Error.xhtml?faces-redirect=true";
+        }
+    }
 }

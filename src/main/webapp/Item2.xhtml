@@ -16,7 +16,7 @@
 
     </h:head>
 
-    <h:messages showSummary="flase" showDetail="true"/>
+    <h:messages showSummary="true" showDetail="false"/>
     <h1>Items</h1>
     <p:dataTable value="#{itemManager.allItem}" var="i"
                  styleClass="table">
@@ -63,11 +63,9 @@
             <tr>
                 <td>上级目录</td>
                 <td><h:selectOneMenu title="category_fk" id="category"
-                                     value="#{itemaddmanager.newItem.category}" converter="#{categoryConverterBean}">
+                                     value="#{itemaddmanager.newItem.category.id}" converter="#{categoryConverterBean}">
                         <f:selectItem itemLabel="--选择分类--" />
-                       <!--  <f:selectItem itemValue="001" itemLabel="001"/>
-                         <f:selectItem itemValue="002" itemLabel="002"/> -->
-                        <f:selectItems value="#{categoryManager.allCategoryName}" var="Category" itemValue="#{Category}" itemLabel="#{Category}"/>
+                        <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
                     </h:selectOneMenu>
                 </td>
             </tr>
@@ -76,8 +74,15 @@
                 <td><h:inputText value="#{itemaddmanager.newItem.numTotal}" /></td>
             </tr>
             <tr>
-                <td>物品简介</td>
+                <td>物品编码</td>
                 <td><h:inputText value="#{itemaddmanager.newItem.code}" /></td>
+            </tr>
+            <tr>
+                <td>物品购入日期(日/月/年)</td>
+                <td><p:calendar value="#{itemaddmanager.newItem.dateBought}" id="datebought">
+                    </p:calendar>
+                    <h:message for="datebought"/>
+                </td>
             </tr>
             <tr>
                 <td></td>
