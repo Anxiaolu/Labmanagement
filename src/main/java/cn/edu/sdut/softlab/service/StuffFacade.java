@@ -19,8 +19,10 @@
 package cn.edu.sdut.softlab.service;
 
 import cn.edu.sdut.softlab.model.Stuff;
+import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
@@ -46,5 +48,12 @@ public class StuffFacade extends AbstractFacade<Stuff> {
     parameters.put("username", username);
     return findSingleByNamedQuery("Stuff.findByUsername", parameters, Stuff.class).get();
   } 
-  
+   public List<String> findAllStuffName(){
+       List<String> allstuffnameList = new ArrayList<>();
+       List<Stuff> allstuffList = findAll(Stuff.class);
+       for(Stuff s:allstuffList){
+           allstuffnameList.add(s.getUsername());
+       }
+       return allstuffnameList;
+   }
 }

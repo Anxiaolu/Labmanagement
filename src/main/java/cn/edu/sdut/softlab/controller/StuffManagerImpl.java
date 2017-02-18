@@ -27,6 +27,10 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -37,123 +41,158 @@ import javax.ws.rs.NotFoundException;
 @RequestScoped
 public class StuffManagerImpl implements StuffManager {
 
-	@Inject
-	private transient Logger logger;
+    @Inject
+    private transient Logger logger;
 
-	@Inject
-	StuffFacade userService;
+    @Inject
+    StuffFacade userService;
 
-	@Inject
-	Credentials credentials;
+    @Inject
+    Credentials credentials;
 
-	@Inject
-	private UserTransaction utx;
+    @Inject
+    private UserTransaction utx;
 
-	@Inject
-	EntityManager em;
+    @Inject
+    EntityManager em;
 
-	private Stuff currenstuff = null;
+    private Stuff currenstuff = null;
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	//作为前台修改信息的暂存变量
-	private String currentstuffname;
-	private String email;
-	private String password;
+    //作为前台修改信息的暂存变量
+    private String currentstuffname;
+    private String email;
+    private String password;
 
-	public String getCurrentstuffname() {
-		return currentstuffname;
-	}
+    public String getCurrentstuffname() {
+        return currentstuffname;
+    }
 
-	public void setCurrentstuffname(String currentstuffname) {
-		this.currentstuffname = currentstuffname;
-	}
+    public void setCurrentstuffname(String currentstuffname) {
+        this.currentstuffname = currentstuffname;
+    }
 
-	private Stuff newStuff = new Stuff();
+    private Stuff newStuff = new Stuff();
 
-	public Stuff getNewStuff() {
-		return newStuff;
-	}
+    public Stuff getNewStuff() {
+        return newStuff;
+    }
 
-	public void setNewStuff(Stuff newStuff) {
-		this.newStuff = newStuff;
-	}
+    public void setNewStuff(Stuff newStuff) {
+        this.newStuff = newStuff;
+    }
 
-	@Override
-	@Produces
-	@Named
-	@RequestScoped
-	public List<Stuff> getStuffs() throws Exception {
-		try {
-			utx.begin();
-			return userService.findAll(Stuff.class);
-		} finally {
-			utx.commit();
-		}
-	}
+    @Override
+    @Produces
+    @Named
+    @RequestScoped
+    public List<Stuff> getStuffs() throws Exception {
+        try {
+            utx.begin();
+            return userService.findAll(Stuff.class);
+        }
+        finally {
+            utx.commit();
+        }
+    }
 
-	@Override
-	public String addStuff() throws Exception {
-		try {
-			utx.begin();
-			userService.create(newStuff);
-			logger.log(Level.INFO, "Added {0}", newStuff);
-			return "/users.xhtml?faces-redirect=true";
-		} finally {
-			utx.commit();
-		}
-	}
+    @Override
+    public String addStuff() throws Exception {
+        try {
+            utx.begin();
+            userService.create(newStuff);
+            logger.log(Level.INFO, "Added {0}", newStuff);
+            return "/Index.xhtml?faces-redirect=true";
+        }
+        finally {
+            utx.commit();
+        }
+    }
 
-	public List<String> getAllStuffName() throws Exception {
-		List<String> stuffnamelist = new ArrayList<>();
-		List<Stuff> stufflist = getStuffs();
-		for (Stuff s : stufflist) {
-			stuffnamelist.add(s.getUsername());
-		}
-		return stuffnamelist;
-	}
+    @Named
+    @RequestScoped
+    public List<String> getAllStuffName() throws Exception {
+        List<String> stuffnamelist = new ArrayList<>();
+        List<Stuff> stufflist = getStuffs();
+        for (Stuff s : stufflist) {
+            stuffnamelist.add(s.getUsername());
+        }
+        return stuffnamelist;
+    }
 
-	public String removeStuff() throws Exception {
-		Stuff temporstuff = userService.findByName(credentials.getName());
-		if (temporstuff != null) {
-			currenstuff = temporstuff;
-		}
-		utx.begin();
-		userService.remove(currenstuff);
-		// em.remove(em.merge(currenstuff));
-		// em.flush();
-		utx.commit();
-		logger.log(Level.INFO, "Added {0}", newStuff);
-		return "/userdelect.xhtml?faces-redirect=true";
-	}
+    @Named
+    @RequestScoped
+    public String removeStuff() throws Exception {
+        Stuff temporstuff = userService.findByName(credentials.getName());
+        if (temporstuff != null) {
+            currenstuff = temporstuff;
+        }
+        utx.begin();
+        userService.remove(currenstuff);
+        // em.remove(em.merge(currenstuff));
+        // em.flush();
+        utx.commit();
+        logger.log(Level.INFO, "Added {0}", newStuff);
+        return "/userdelect.xhtml?faces-redirect=true";
+    }
 
-	public String editStuff() throws Exception {
-		utx.begin();
-		Stuff updatestuff = userService.findByName(currentstuffname);
-		if (updatestuff == null)
-			throw new NotFoundException();
-		if (updatestuff.getUsername() != null)
-			updatestuff.setUsername(currentstuffname);
-		if (updatestuff.getPassword() != null)
-			updatestuff.setPassword(password);
-		if (updatestuff.getEmail() != null)
-			updatestuff.setEmail(email);
-		em.merge(updatestuff);
-		utx.commit();
-		return "/Stuff_query.xhtml?faces-redirect=true";
-	}
+    @Named
+    @RequestScoped
+    public String editStuff() throws Exception {
+        utx.begin();
+        Stuff updatestuff = userService.findByName(currentstuffname);
+        if (updatestuff == null) {
+            throw new NotFoundException();
+        }
+        if (updatestuff.getUsername() != null) {
+            updatestuff.setUsername(currentstuffname);
+        }
+        if (updatestuff.getPassword() != null) {
+            updatestuff.setPassword(password);
+        }
+        if (updatestuff.getEmail() != null) {
+            updatestuff.setEmail(email);
+        }
+        em.merge(updatestuff);
+        utx.commit();
+        return "/Stuff_query.xhtml?faces-redirect=true";
+    }
+
+    @Named
+    @RequestScoped
+    public void validateName(FacesContext fc, UIComponent component, Object value) throws Exception {
+        if (((String) value).contains("_") | ((String) value).contains("~")
+                | ((String) value).contains("！") | ((String) value).contains("@")
+                | ((String) value).contains("#") | ((String) value).contains("$")
+                | ((String) value).contains("%") | ((String) value).contains("^")
+                | ((String) value).contains("&") | ((String) value).contains("*")
+                | ((String) value).contains("(") | ((String) value).contains(")")
+                | ((String) value).contains("-") | ((String) value).contains("{")
+                | ((String) value).contains("}") | ((String) value).contains("【")
+                | ((String) value).contains("]") | ((String) value).contains(":")) {
+            throw new ValidatorException(new FacesMessage("您输入的昵称不合法！"));
+        }
+
+        List<String> stuffNamelist = getAllStuffName();
+        for (String s : stuffNamelist) {
+            if (((String) value).equals(s)) {
+                throw new ValidatorException(new FacesMessage("您注册的昵称已有，请另选择其他昵称！"));
+            }
+        }
+    }
 }

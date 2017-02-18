@@ -1,0 +1,91 @@
+
+<!--
+Copyright 2017 huanlu.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+    <h:head>
+        <title>PrimeFaces and Boostrap test</title>
+        <!-- CSS -->
+        <link rel="stylesheet"
+              href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500" />
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet"
+              href="assets/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="assets/css/form-elements.css" />
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <script src="assets/" />
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </h:head>
+    <h:body>
+
+        <!-- Top content -->
+        <div class="top-content">
+            <div class="inner-bg">
+                <div class="container">
+                    <h:messages />
+                    <div class="row">
+                        <ui:composition>
+                            <composite:interface>
+                                <composite:attribute name="value" required="true"/>
+                                <composite:attribute name="completionItems" required="true"/>
+                            </composite:interface>
+                            <composite:implementation>
+                                <h:outputScript library="javascript" name="prototype-1.6.0.2.js" target="head"/>
+                                <h:outputScript library="javascript" name="autoComplete.js" target="head"/>
+                                <h:inputText id="input" value="#{cc.attrs.value}"
+                                            valueChangeListener="#{autocompleteListener.valueChanged}"
+                                            onkeyup="com.corejsf.updateCompletionItems(this, event)"
+                                            onblur="com.corejsf.inputLostFocus(this)"/>
+                                <h:selectOneListbox id="listbox" style="display: none"
+                                                    valueChangeListener="#{autocompleteListener.completionItemSelected}"
+                                                    onfocus="com.corejsf.listboxGainedFocus()"/>
+                                <f:selectItems value="#{cc.attrs.completionItems}"/>
+                                <f:ajax render="input"/>
+                            </composite:implementation>
+                        </ui:composition>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Javascript -->
+        <script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <script src="assets/js/scripts.js"></script>
+
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </h:body>
+</html>
+
+

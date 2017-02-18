@@ -45,47 +45,70 @@ limitations under the License.
 
         <!-- Top content -->
         <div class="top-content">
+
             <div class="inner-bg">
                 <div class="container">
                     <h:messages />
-                    <div class="row">
-                        <h:form>
-                            <h:panelGrid id="item_query" columns="4">
-                                <f:event type="postValidate" listener="#{itemQueryManager.validateParameters}" />
-                                <h:selectOneMenu title="item_query_category_fk" id="category"
-                                                 value="#{itemQueryManager.categoryid}" converter="#{categoryConverterBean}">
-                                    <f:valueChangeListener type="cn.edu.sdut.softlab.Listener.CategoryChangeListener"/>
-                                    <f:selectItem itemLabel="--选择分类--" />
-                                    <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
-                                </h:selectOneMenu>
-                                <h:selectOneMenu title="item_status" id="status"
-                                                 value="#{itemQueryManager.status}">
-                                    <f:selectItem itemLabel="--选择状态--" />
-                                    <f:selectItem itemValue="AVALIABLE" itemLabel="AVALIABLE"/>
-                                    <f:selectItem itemValue="NOT_AVALIABLE" itemLabel="NOT_AVALIABLE"/>
-                                </h:selectOneMenu>
-                                <h:inputText value="#{itemQueryManager.code}" />
-                                <p:calendar value="#{itemQueryManager.dateBought}" pattern="yyyy-MM-dd">
-                                </p:calendar>
-                            </h:panelGrid>
-                            <h:commandButton action="#{itemQueryManager.pushQueryItemParameters}"
-                                             value="Query Item" >
-                            </h:commandButton>
-                        </h:form>
-                    </div>
-                    <p:dataTable id="dataTable" var="i" value="#{itemQueryManager.queryItem}" rows="15">
+                    <p:dataTable id="dataTable" var="i" value="#{itemManager.allItem}" rows="5">
                         <f:facet name="header">Item List</f:facet>
                         <p:column headerText="ItemName">#{i.name}</p:column>
                         <p:column headerText="Status">#{i.status}</p:column>
                         <p:column headerText="DateBought">#{i.dateBought}</p:column>
                         <p:column headerText="Code">#{i.code}</p:column>
                         <p:column headerText="NumTotal">#{i.numTotal}</p:column>
-                        <p:column headerText="Category">#{i.category.name}</p:column>>
+                        <p:column headerText="Category">#{i.category.name}</p:column>
                     </p:dataTable>
                     <p:blockUI block="dataTable" trigger="dataTable">
                         LOADING...<br />
                         <p:graphicImage value="/images/ajax-loader.gif" />
                     </p:blockUI>
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1>
+                                <strong>314Lab</strong> Management
+                            </h1>
+                            <div class="description">
+                                <p>Power of All of 314!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p:menubar>
+
+                        </p:menubar>
+                        <p:dataTable>
+
+                        </p:dataTable>
+                    </div>
+                    <div class="row">
+                        <h:form>
+                            <p>名称</p>
+                            <h:selectOneMenu title="item" id="item_edit"
+                                             value="#{itemManager.itemname}" required="true" requiredMessage="您还没有选择你要修改的物品！">
+                                <f:selectItem itemLabel="--选择物品--" />
+                                <f:selectItems value="#{itemManager.allItemName}" var="Itemname"
+                                               itemValue="#{Itemname}" itemLabel="#{Itemname}" />
+                            </h:selectOneMenu>
+                            <br />
+                            <h:selectOneMenu title="item_query_category_fk" id="category"
+                                             value="#{itemManager.categoryid}" converter="#{categoryConverterBean}">
+                                <f:selectItem itemLabel="--选择分类--" />
+                                <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
+                            </h:selectOneMenu>
+                            <br />
+                            <h:inputText value="#{itemManager.code}" />
+                            <br />
+                            <h:inputText value="#{itemManager.numTotal}" />
+                            <br />
+                            <p:calendar value="#{itemManager.dateBought}" pattern="yyyy-MM-dd">
+                            </p:calendar>
+                            <h:message for="datebought"/>
+                            <br />
+                            <h:commandButton action="#{itemManager.editItem}" id="submit_edit"
+                                             value="Edit Item" />
+                            <p:blockUI block="item_edit" trigger="submit_edit" />
+                        </h:form>
+                    </div>
                 </div>
             </div>
 
