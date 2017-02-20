@@ -59,14 +59,15 @@ limitations under the License.
                                 <h:outputScript library="javascript" name="prototype-1.6.0.2.js" target="head"/>
                                 <h:outputScript library="javascript" name="autoComplete.js" target="head"/>
                                 <h:inputText id="input" value="#{cc.attrs.value}"
-                                            valueChangeListener="#{autocompleteListener.valueChanged}"
-                                            onkeyup="com.corejsf.updateCompletionItems(this, event)"
-                                            onblur="com.corejsf.inputLostFocus(this)"/>
+                                             valueChangeListener="#{autocompleteListener.valueChanged}"
+                                             onkeyup="com.corejsf.updateCompletionItems(this, event)"
+                                             onblur="com.corejsf.inputLostFocus(this)"/>
                                 <h:selectOneListbox id="listbox" style="display: none"
                                                     valueChangeListener="#{autocompleteListener.completionItemSelected}"
-                                                    onfocus="com.corejsf.listboxGainedFocus()"/>
-                                <f:selectItems value="#{cc.attrs.completionItems}"/>
-                                <f:ajax render="input"/>
+                                                    onfocus="com.corejsf.listboxGainedFocus()">
+                                    <f:selectItems value="#{cc.attrs.completionItems}"/>
+                                    <f:ajax render="input"/>    
+                                </h:selectOneListbox>
                             </composite:implementation>
                         </ui:composition>
                     </div>

@@ -34,6 +34,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.UserTransaction;
@@ -60,7 +61,7 @@ public class ItemQueryManager {
 
     @Inject
     CategoryFacade categoryService;
-    
+
     @Inject
     FacesContext facesContext;
 
@@ -101,57 +102,128 @@ public class ItemQueryManager {
         this.dateBought = dateBought;
     }
 
-//    public QueryCondition pushQueryItemParameters() throws Exception {
-//        //形成参数列表
-//        List<QueryParameter> parameters = new ArrayList<>();
-//        if (!this.getCategoryid().equals("")) {
-//            QueryParameter qp_category = new QueryParameter("category", categoryService.
-//                    findCategoryById(this.getCategoryid()), Equal);
-//            parameters.add(qp_category);
-//        }
-//        if (!this.getCode().equals("")) {
-//            QueryParameter qp_code = new QueryParameter("code", this.getCode(), Equal);
-//            parameters.add(qp_code);
-//        }
-//        if (!this.getDateBought().equals("")) {
-//            QueryParameter qp_datebought = new QueryParameter("dateBought", this.getDateBought(), Equal);
-//            parameters.add(qp_datebought);
-//        }
-//        if (!this.getStatus().equals("")) {
-//            QueryParameter qp4_status = new QueryParameter("status", this.getStatus(), Equal);
-//            parameters.add(qp4_status);
-//        }
-//
-//        for (QueryParameter q : parameters) {
-//            System.out.println("所选中的属性参数列表" + q.ParameterName + "," + q.ParameterType + "," + q.ParameterValue);
-//        }
-//
-//        //生成查询对象实体
-//        QueryCondition qcd = new QueryCondition("Item", parameters);
-//        return qcd;
-//    }
+    /**
+     * 用于检测在筛选物品的时候输入的日期不合法
+     *
+     * @param fc
+     * @param component
+     * @param value //前台传入的日期参数
+     */
+    @Named
+    @RequestScoped
+    public void validateQueryDate(FacesContext fc, UIComponent component, Object value) {
+        SimpleDateFormat formatdate = new SimpleDateFormat("yyyy-MM-dd");
+        if (!((String) value).contains("-")) {
+            throw new ValidatorException(new FacesMessage("您输入的日期不合法，请按照（年-月-日 如：2017-02-12）!"));
+        }
+        else {
+            try {
+                formatdate.parse(((String) value));
+            } catch (Exception e) {
+                throw new ValidatorException(new FacesMessage("日期验证错误，您输入的日期可能不合法！"));
+            }
+            int[] date = {0};
+            String[] dateString = ((String)value).split("-");
+            for(int i=0;i<3;i++){
+                date[i] = Integer.parseInt(dateString[i]);
+            }
+            int y = date[0];int m = date[1]; int d = date[2];
+            if (isValidate(y, m, d)) {
+                throw new ValidatorException(new FacesMessage("您输入的日期不合法"));
+            }
+        }
+    }
+
+    public static boolean isValidate(int y, int m, int d) {
+        if (d < 1 || m < 1 || m > 12) {
+            return false;
+        }
+        if (m == 2) {
+            if (isLeapYear(y)) {
+                return d <= 29;
+            } else {
+                return d <= 28;
+            }
+        } else if (m == 4 || m == 6 || m == 9 || m == 11) {
+            return d <= 30;
+        } else {
+            return d <= 31;
+        }
+    }
+
+    public static boolean isLeapYear(int y) {
+        return y % 4 == 0 && (y % 400 == 0 || y % 100 != 0);
+    }
+
+    /**
+     * 获取前台选中的筛选条件, 根据所选中的条件进行查询对象的生成
+     *
+     * @return
+     * @throws Exception
+     */
+    @Named
+    @RequestScoped
+    public QueryCondition pushQueryItemParameters() throws Exception {
+        //形成参数列表
+        List<QueryParameter> parameters = new ArrayList<>();
+        if (!this.getCategoryid().equals("")) {
+            QueryParameter qp_category = new QueryParameter("category", categoryService.
+                    findCategoryById(this.getCategoryid()), Equal);
+            parameters.add(qp_category);
+        }
+        if (!this.getCode().equals("")) {
+            QueryParameter qp_code = new QueryParameter("code", this.getCode(), Equal);
+            parameters.add(qp_code);
+        }
+        if (!this.getDateBought().equals("")) {
+            QueryParameter qp_datebought = new QueryParameter("dateBought", this.getDateBought(), Equal);
+            parameters.add(qp_datebought);
+        }
+        if (!this.getStatus().equals("")) {
+            QueryParameter qp4_status = new QueryParameter("status", this.getStatus(), Equal);
+            parameters.add(qp4_status);
+        }
+
+        for (QueryParameter q : parameters) {
+            System.out.println("所选中的属性参数列表" + q.ParameterName + "," + q.ParameterType + "," + q.ParameterValue);
+        }
+
+        //生成查询对象实体
+        QueryCondition qcd = new QueryCondition("Item", parameters);
+        return qcd;
+    }
+
     public List<Item> init() {
         return itemService.findAll(Item.class);
     }
 
+    /**
+     * 处理页面下方的Item对象列表的显示
+     *
+     * @return 符合条件的筛选完成地Item对象
+     * @throws Exception
+     */
     @Named
     @RequestScoped
     public List<Item> getQueryItem() throws Exception {
 
-        // CriteriaBuilder cb = em.getCriteriaBuilder();
-        // CriteriaQuery cq = cb.createQuery();
-        // cq.select(cq.from(Item.class));
-        //Predicate pre = cb.greaterThanOrEqualTo(cq.from(Item.class).get(), cq);
-        //return em.createQuery(cq).getResultList();
-//        if (this.categoryid.equals("") && this.code.equals("") && this.status.equals("") && this.dateBought.equals("")) {
-//            init();
-//        }
-//        List<Item> queryByPropertys = queryService.queryByPropertys(this.validateParameters(event));
-//
-//        return queryByPropertys;
-        return init();
+        List<Item> queryitemList = new ArrayList<>();
+        boolean first = true;
+
+        if (first) {
+            queryitemList = init();
+            first = false;
+
+        } else if (this.categoryid.equals("") && this.code.equals("") && this.status.equals("") && this.dateBought.equals("")) {
+            queryitemList = init();
+        } else if (this.categoryid.equals("") | this.code.equals("") | this.status.equals("") | this.dateBought.equals("")) {
+            queryitemList = queryService.queryByPropertys(this.pushQueryItemParameters());
+        }
+        return queryitemList;
     }
 
+    @Named
+    @RequestScoped
     public void getValidateParameters(ComponentSystemEvent event) throws ParseException {
         UIComponent source = event.getComponent();
         UIInput categoryidComponent = (UIInput) source.findComponent("categoryid");
@@ -200,7 +272,7 @@ public class ItemQueryManager {
         List<Item> queryByPropertys = queryService.queryByPropertys(qcd);
 
         for (Item i : queryByPropertys) {
-            facesContext.addMessage(null, new FacesMessage("返回的item对象:" +i.getName()));
+            facesContext.addMessage(null, new FacesMessage("返回的item对象:" + i.getName()));
         }
 
     }

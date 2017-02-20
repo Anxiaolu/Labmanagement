@@ -51,12 +51,12 @@ limitations under the License.
                     <div class="row">
                         <h:form>
                             <h:panelGrid id="item_query" columns="4">
-                                <f:event type="postValidate" listener="#{itemQueryManager.validateParameters}" />
                                 <h:selectOneMenu title="item_query_category_fk" id="category"
                                                  value="#{itemQueryManager.categoryid}" converter="#{categoryConverterBean}">
                                     <f:valueChangeListener type="cn.edu.sdut.softlab.Listener.CategoryChangeListener"/>
                                     <f:selectItem itemLabel="--选择分类--" />
                                     <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
+                                    <f:ajax render="dataTable"/>
                                 </h:selectOneMenu>
                                 <h:selectOneMenu title="item_status" id="status"
                                                  value="#{itemQueryManager.status}">
@@ -65,7 +65,8 @@ limitations under the License.
                                     <f:selectItem itemValue="NOT_AVALIABLE" itemLabel="NOT_AVALIABLE"/>
                                 </h:selectOneMenu>
                                 <h:inputText value="#{itemQueryManager.code}" />
-                                <p:calendar value="#{itemQueryManager.dateBought}" pattern="yyyy-MM-dd">
+                                <p:calendar value="#{itemQueryManager.dateBought}" pattern="yyyy-MM-dd" validator="#{itemQueryManager.validateQueryDate}">
+                                    <f:ajax rendered="dateTable"/>
                                 </p:calendar>
                             </h:panelGrid>
                             <h:commandButton action="#{itemQueryManager.pushQueryItemParameters}"
@@ -86,9 +87,9 @@ limitations under the License.
                         LOADING...<br />
                         <p:graphicImage value="/images/ajax-loader.gif" />
                     </p:blockUI>
+
                 </div>
             </div>
-
         </div>
 
         <!-- Javascript -->

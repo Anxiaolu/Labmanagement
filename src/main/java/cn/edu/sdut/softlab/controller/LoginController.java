@@ -28,9 +28,11 @@ import javax.enterprise.context.RequestScoped;
 
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -96,6 +98,26 @@ public class LoginController implements Serializable {
         facesContext.addMessage(null, new FacesMessage("Goodbye, " + currentUser.getUsername()));
         currentUser = null;
         return "/index.xhtml?faces-redirect=true";
+    }
+    
+    @Named
+    @RequestScoped
+    public void checkLogin(ComponentSystemEvent event){
+        if(!isLoggedIn()){
+            FacesContext context = facesContext.getCurrentInstance();
+            ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler)context.
+                    getApplication().getNavigationHandler();
+            handler.performNavigation("index");
+        }
+    }
+    
+    @Named
+    @RequestScoped
+    public String getLoginUserName(){
+        if (isLoggedIn()) {
+            return this.getCurrentUser().getUsername();
+        }
+        return null;
     }
 
     /**
