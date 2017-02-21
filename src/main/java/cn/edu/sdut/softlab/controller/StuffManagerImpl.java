@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Su Baochen and individual contributors by the 
+ * Copyright 2017 huanlu and individual contributors by the 
  * @authors tag. See the copyright.txt in the distribution for
  * a full listing of individual contributors.
  *
@@ -17,6 +17,7 @@
  */
 package cn.edu.sdut.softlab.controller;
 
+import cn.edu.sdut.softlab.converterandvalidator.IllegalValidator;
 import cn.edu.sdut.softlab.model.Stuff;
 import cn.edu.sdut.softlab.service.StuffFacade;
 
@@ -39,7 +40,7 @@ import javax.ws.rs.NotFoundException;
 
 @Named("userManager")
 @RequestScoped
-public class StuffManagerImpl implements StuffManager {
+public class StuffManagerImpl extends IllegalValidator implements StuffManager {
 
     @Inject
     private transient Logger logger;
@@ -144,8 +145,6 @@ public class StuffManagerImpl implements StuffManager {
         }
         utx.begin();
         userService.remove(currenstuff);
-        // em.remove(em.merge(currenstuff));
-        // em.flush();
         utx.commit();
         logger.log(Level.INFO, "Added {0}", newStuff);
         return "/userdelect.xhtml?faces-redirect=true";
@@ -175,19 +174,8 @@ public class StuffManagerImpl implements StuffManager {
 
     @Named
     @RequestScoped
-    public void validateName(FacesContext fc, UIComponent component, Object value) throws Exception {
-        if (((String) value).contains("_") | ((String) value).contains("~")
-                | ((String) value).contains("！") | ((String) value).contains("@")
-                | ((String) value).contains("#") | ((String) value).contains("$")
-                | ((String) value).contains("%") | ((String) value).contains("^")
-                | ((String) value).contains("&") | ((String) value).contains("*")
-                | ((String) value).contains("(") | ((String) value).contains(")")
-                | ((String) value).contains("-") | ((String) value).contains("{")
-                | ((String) value).contains("}") | ((String) value).contains("【")
-                | ((String) value).contains("]") | ((String) value).contains(":")) {
-            throw new ValidatorException(new FacesMessage("您输入的昵称不合法！"));
-        }
-
+    public void StuffAddValidator(FacesContext fc, UIComponent component, Object value) throws Exception {
+        AddValidator(value);
         List<String> stuffNamelist = getAllStuffName();
         for (String s : stuffNamelist) {
             if (((String) value).equals(s)) {

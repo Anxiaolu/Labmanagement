@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <meta charset="utf-8"/>
+    <f:view>
+        <f:event type="preRenderView" listener="#{login.checkLogin}"/>
+        <h:head>
+            <title>LendOut</title>
+            <link href="assets/css/table-style.css" rel="stylesheet"
+                  type="css/text" />
+            <link href="assets/css/form-elements.css" rel="stylesheet"
+                  type="css/text" />
+            <link href="assets/css/style.css" rel="stylesheet" type="css/text" />
+        </h:head>
+        <ui:composition template="template/template.xhtml">
+            <ui:define name="content">
+                <h:messages />
+                <h1>Items</h1>
+                <h:form>
+                    <p:dataTable id="dataTable" value="#{itemLend.avaliableItems}" var="i" rows="5" paginator="true">
+                        <p:column headerText="ItemName">#{i.name}</p:column>
+                        <p:column headerText="Status">#{i.status}</p:column>
+                        <p:column headerText="DateBought">#{i.dateBought}</p:column>
+                        <p:column headerText="Code">#{i.code}</p:column>
+                        <p:column headerText="NumTotal">#{i.numTotal}</p:column>
+                        <p:column headerText="Category">#{i.category.name}</p:column>
+                        <p:column headerText="LendNum">
+                            <h:inputText value="#{itemLend.lendNum}"/>
+                        </p:column>
+                        <h:column>
+                            <f:facet name="header">Operation</f:facet>
+                            <h:commandButton value="Lend" action="#{itemLend.lendItem(item)}">
+                                
+                            </h:commandButton>
+                            <h:commandButton value="Return" action="#{itemLend.returnItem(item)}"/>
+                        </h:column>
+                    </p:dataTable>
+                    <p:blockUI block="dataTable" trigger="dataTable">
+                        LOADING...<br />
+                        <p:graphicImage value="/assets/img/loading/loading.gif" />
+                    </p:blockUI>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </f:view>
+</html>

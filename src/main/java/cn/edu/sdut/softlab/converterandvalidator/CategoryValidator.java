@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.sdut.softlab.converter;
+package cn.edu.sdut.softlab.converterandvalidator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

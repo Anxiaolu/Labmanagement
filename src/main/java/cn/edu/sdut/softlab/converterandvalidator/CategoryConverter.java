@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.edu.sdut.softlab.converter;
+package cn.edu.sdut.softlab.converterandvalidator;
 
 import cn.edu.sdut.softlab.model.Category;
 import cn.edu.sdut.softlab.service.CategoryFacade;

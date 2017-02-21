@@ -18,8 +18,10 @@
 package cn.edu.sdut.softlab.service;
 
 import cn.edu.sdut.softlab.model.Item;
+import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
@@ -46,11 +48,18 @@ public class ItemFacade extends AbstractFacade<Item> {
         return findSingleByNamedQuery("Item.findByNameAndCode", parameters, Item.class).get();
     }
 
-    public void setItemStatus(Item item, String status) {
-        for (Item i : this.findAll(Item.class)) {
-            if (i.getId().equals(item.getId())) {
-                i.setStatus(status);
+    public List<Item> getAvailableItems(){
+        List<Item> alllist = this.findAll(Item.class);
+        List<Item> list = new ArrayList<>();
+        for(Item i:alllist){
+            if (i.getStatus().equals("AVALIABLE")) {
+               list.add(i);
             }
         }
+        return list;
+    }
+    
+    public Integer findItemid(Item item){
+        return item.getId();
     }
 }

@@ -196,7 +196,7 @@ public class ItemManager {
            //updateitem.setCategory(categoryservice.findCategoryById(this.getCategory().getId()));
            updateitem.setCategory(categoryservice.findCategoryById(this.categoryid));
         }
-        if (updateitem.getNumTotal() >= 0) {
+        if (updateitem.getNumTotal() > 0) {
             updateitem.setStatus("AVALIABLE");
         } else {
             updateitem.setStatus("NOT_AVALIABLE");

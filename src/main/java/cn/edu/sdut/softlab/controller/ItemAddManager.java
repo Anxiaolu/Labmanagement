@@ -1,5 +1,6 @@
 package cn.edu.sdut.softlab.controller;
 
+import cn.edu.sdut.softlab.converterandvalidator.IllegalValidator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,10 +17,14 @@ import cn.edu.sdut.softlab.model.Category;
 import cn.edu.sdut.softlab.model.Item;
 import cn.edu.sdut.softlab.service.CategoryFacade;
 import cn.edu.sdut.softlab.service.ItemFacade;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 @Named("itemaddmanager")
 @RequestScoped
-public class ItemAddManager {
+public class ItemAddManager extends IllegalValidator{
 
     @Inject
     private transient Logger logger;
@@ -97,9 +102,21 @@ public class ItemAddManager {
             finally {
                 utx.commit();
             }
-        } 
-        else {
+        } else {
             return "/Error.xhtml?faces-redirect=true";
         }
     }
+
+    @Named
+    @RequestScoped
+    public void ItemAddValidator(FacesContext fc, UIComponent component, Object value) {
+        AddValidator(value);
+        List<Item> itemList = itemService.findAll(Item.class);
+        for (Item i : itemList) {
+            if (((String) value).equals(i.getName())) {
+                throw new ValidatorException(new FacesMessage("您要添加的物品已有，请验证确定后再次添加！"));
+            }
+        }
+    }
+
 }

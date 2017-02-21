@@ -40,5 +40,4 @@ public interface StuffManager {
    */
   String addStuff() throws Exception;
 
- // String removeStuff(Stuff stuff) throws Exception;
 } 

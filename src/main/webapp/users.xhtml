@@ -98,7 +98,7 @@ limitations under the License.
                                             <p:inputText
                                                 value="#{userManager.newStuff.username}" placeholder="Username..."
                                                 styleClass="form-username form-control" id="form-username"
-                                                validator="#{userManager.validateName}" rendered="true" 
+                                                validator="#{userManager.StuffAddValidator}" rendered="true" 
                                                 requiredMessage="您还没有输入您的姓名！">
                                                 <f:ajax event="blur" render="username"/>
                                             </p:inputText>

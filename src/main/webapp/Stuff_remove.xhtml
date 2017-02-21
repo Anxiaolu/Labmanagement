@@ -58,22 +58,12 @@ limitations under the License.
             <div class="inner-bg">
                 <div class="container">
                     <h:messages />
-                    <p:dataTable var="u" value="#{stuffs}" rows="5">
+                    <p:dataTable var="u" value="#{stuffs}" rows="5" paginator="true">
                         <f:facet name="header">Users List</f:facet>
                         <p:column headerText="UserName">#{u.username}</p:column>
                         <p:column headerText="Passowrd">#{u.password}</p:column>
                         <p:column headerText="Email">#{u.email}</p:column>
                     </p:dataTable>
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1>
-                                <strong>314Lab</strong> Management
-                            </h1>
-                            <div class="description">
-                                <p>Power of All of 314!</p>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3 form-box">
                             <div class="form-top">
