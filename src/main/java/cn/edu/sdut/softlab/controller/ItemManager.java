@@ -16,8 +16,13 @@ import cn.edu.sdut.softlab.model.Item;
 import cn.edu.sdut.softlab.service.CategoryFacade;
 import cn.edu.sdut.softlab.service.ItemFacade;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 @Named("itemManager")
 @RequestScoped
@@ -37,6 +42,9 @@ public class ItemManager {
 
     @Inject
     CategoryFacade categoryservice;
+    
+    @Inject
+    FacesContext facesContext;
 
     @Inject
     private UserTransaction utx;
@@ -144,6 +152,21 @@ public class ItemManager {
         }
         return itemname;
     }
+    
+    @Named
+    @RequestScoped
+    public void validateStuffName(FacesContext fc,UIComponent uc, Object value){
+        List<String> itemnameList = itemService.getAllItemName();
+        Iterator it = itemnameList.iterator();
+        while(it.hasNext()){
+            if (!it.equals(value)) {
+                continue;
+            }
+            if (it.hasNext()) {
+                throw new ValidatorException(new FacesMessage("库存中没有这种物品！"));
+            }
+        }
+    }
 
     /**
      * 根据前台输入的名字查找数据库删除对应的item对象
@@ -159,9 +182,8 @@ public class ItemManager {
         }
         utx.begin();
         itemService.remove(currentItem);
-        // em.remove(em.merge(currenstuff));		//尝试用过entitymanager进行提交
-        // em.flush();
         utx.commit();
+        facesContext.addMessage(null, new FacesMessage("您选中的物品已经删除！"));
         logger.log(Level.INFO, "Added {0}");
         return "/RemoveItem.xhtml?faces-redirect=true";
     }

@@ -138,16 +138,20 @@ public class ItemQueryManager {
         if (d < 1 || m < 1 || m > 12) {
             return false;
         }
-        if (m == 2) {
-            if (isLeapYear(y)) {
-                return d <= 29;
-            } else {
-                return d <= 28;
-            }
-        } else if (m == 4 || m == 6 || m == 9 || m == 11) {
-            return d <= 30;
-        } else {
-            return d <= 31;
+        switch (m) {
+            case 2:
+                if (isLeapYear(y)) {
+                    return d <= 29;
+                } else {
+                    return d <= 28;
+                }
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return d <= 30;
+            default:
+                return d <= 31;
         }
     }
 

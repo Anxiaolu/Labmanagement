@@ -17,8 +17,11 @@ package cn.edu.sdut.softlab.service;
 
 import cn.edu.sdut.softlab.model.Item;
 import cn.edu.sdut.softlab.model.ItemAccount;
+import cn.edu.sdut.softlab.model.Stuff;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -52,6 +55,14 @@ public class ItemAccountFaced extends AbstractFacade<ItemAccount>{
             }
         }
         return correctlist;
+    }
+    
+    public ItemAccount findItemAccountByStuffAndItemAndFlag(Stuff stuff,Item item,String flag){
+        Map<String,Object> parameters = new HashMap<>();
+        parameters.put("stuff", stuff);
+        parameters.put("item", item);
+        parameters.put("flag", flag);
+        return findSingleByNamedQuery("ItemAccount.findByStuffAndItemAndFlag", parameters, ItemAccount.class).get();
     }
     
 }

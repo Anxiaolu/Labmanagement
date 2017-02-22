@@ -101,7 +101,7 @@ public class LoginController implements Serializable {
     }
     
     @Named
-    @RequestScoped
+    @SessionScoped
     public void checkLogin(ComponentSystemEvent event){
         if(!isLoggedIn()){
             FacesContext context = facesContext.getCurrentInstance();

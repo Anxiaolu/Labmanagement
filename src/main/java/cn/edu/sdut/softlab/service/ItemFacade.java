@@ -59,6 +59,15 @@ public class ItemFacade extends AbstractFacade<Item> {
         return list;
     }
     
+    public List<String> getAllItemName(){
+        List<Item> items = this.findAll(Item.class);
+        List<String> itemnameList =  new ArrayList<>();
+        for(Item i:items){
+            itemnameList.add(i.getName());
+        }
+        return itemnameList;
+    }
+    
     public Integer findItemid(Item item){
         return item.getId();
     }

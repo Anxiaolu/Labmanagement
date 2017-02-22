@@ -8,7 +8,6 @@
       xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <meta charset="utf-8"/>
     <f:view>
-        <f:event type="preRenderView" listener="#{login.checkLogin}"/>
         <h:head>
             <title>LendOut</title>
             <link href="assets/css/table-style.css" rel="stylesheet"
@@ -22,7 +21,8 @@
                 <h:messages />
                 <h1>Items</h1>
                 <h:form>
-                    <p:dataTable id="dataTable" value="#{itemLend.avaliableItems}" var="i" rows="5" paginator="true">
+                    <p:dataTable id="dataTable" value="#{itemLend.availableItems}" 
+                                 var="i" rows="5" paginator="true">
                         <p:column headerText="ItemName">#{i.name}</p:column>
                         <p:column headerText="Status">#{i.status}</p:column>
                         <p:column headerText="DateBought">#{i.dateBought}</p:column>
@@ -32,13 +32,34 @@
                         <p:column headerText="LendNum">
                             <h:inputText value="#{itemLend.lendNum}"/>
                         </p:column>
-                        <h:column>
+                        <p:column>
                             <f:facet name="header">Operation</f:facet>
-                            <h:commandButton value="Lend" action="#{itemLend.lendItem(item)}">
-                                
+                            <h:commandButton value="Lend" action="#{itemLend.lendItem(i)}">
                             </h:commandButton>
-                            <h:commandButton value="Return" action="#{itemLend.returnItem(item)}"/>
-                        </h:column>
+                        </p:column>
+                    </p:dataTable>
+                    <p:blockUI block="dataTable" trigger="dataTable">
+                        LOADING...<br />
+                        <p:graphicImage value="/assets/img/loading/loading.gif" />
+                    </p:blockUI>
+                </h:form>
+                <h:form>
+                    <p:dataTable id="dataTable" value="#{itemLend.availableItems}" 
+                                 var="i" rows="5" paginator="true">
+                        <p:column headerText="ItemName">#{i.name}</p:column>
+                        <p:column headerText="Status">#{i.status}</p:column>
+                        <p:column headerText="DateBought">#{i.dateBought}</p:column>
+                        <p:column headerText="Code">#{i.code}</p:column>
+                        <p:column headerText="NumTotal">#{i.numTotal}</p:column>
+                        <p:column headerText="Category">#{i.category.name}</p:column>
+                        <p:column headerText="LendNum">
+                            <h:inputText value="#{itemLend.lendNum}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">Operation</f:facet>
+                            <h:commandButton value="Lend" action="#{itemLend.lendItem(i)}">
+                            </h:commandButton>
+                        </p:column>
                     </p:dataTable>
                     <p:blockUI block="dataTable" trigger="dataTable">
                         LOADING...<br />

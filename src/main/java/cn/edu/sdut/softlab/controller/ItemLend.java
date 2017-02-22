@@ -20,12 +20,19 @@ import cn.edu.sdut.softlab.model.ItemAccount;
 import cn.edu.sdut.softlab.service.ItemAccountFaced;
 import cn.edu.sdut.softlab.service.ItemFacade;
 import cn.edu.sdut.softlab.service.StuffFacade;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -36,21 +43,31 @@ import javax.inject.Named;
 public class ItemLend {
 
     @Inject
+    private transient Logger logger;
+
+    @Inject
     ItemFacade itemService;
 
     @Inject
     ItemManager itemManager;
-    
+
     @Inject
     StuffFacade stuffService;
-    
+
     @Inject
     LoginController loginService;
-    
+
     @Inject
     ItemAccountFaced itemAccountService;
 
+    @Inject
+    FacesContext facesContext;
+
+    @Inject
+    private UserTransaction utx;
+
     private Integer LendNum;
+    private ItemAccount itemAccount = new ItemAccount();
 
     public Integer getLendNum() {
         return LendNum;
@@ -59,7 +76,7 @@ public class ItemLend {
     public void setLendNum(Integer LendNum) {
         this.LendNum = LendNum;
     }
-    
+
     @Named
     @Produces
     @RequestScoped
@@ -69,26 +86,70 @@ public class ItemLend {
 
     @Named
     @RequestScoped
-    public List<Item> getAvaliableItems() {
+    public List<Item> getAvailableItems() {
         return itemService.getAvailableItems();
     }
-    
-    @Named
-    @RequestScoped
-    public String LendItem(Item item){
-        loginService.getCurrentUser();
-        return null;
+
+    public String LendItem(Item item) throws Exception {
+        itemAccount.setStuff(loginService.getCurrentUser());
+        itemAccount.setItem(item);
+        itemAccount.setFlag("OUT");
+        Integer itemnum = itemService.findByName(item.getName()).getNumTotal();
+        if (LendNum > itemnum || LendNum <= 0) {
+            facesContext.addMessage(null, new FacesMessage("您输入的物品数量不合法！"));
+        } else if (itemnum == LendNum) {
+            itemService.findByName(item.getName()).setNumTotal(0);
+            itemService.findByName(item.getName()).setStatus("NOT_AVALIABLE");
+        } else if (itemnum > LendNum) {
+            itemService.findByName(item.getName()).setNumTotal(itemnum - LendNum);
+        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        itemAccount.setTimeCheck(df.parse(df.format(new Date())));
+        try {
+            utx.begin();
+            itemAccountService.create(itemAccount);
+            logger.log(Level.INFO, "Added {0}", itemAccount);
+            return null;
+        }
+        finally {
+            utx.commit();
+        }
     }
-    
+
+    public String ReturnItem(Item item) throws Exception {
+        itemAccount.setStuff(loginService.getCurrentUser());
+        itemAccount.setItem(item);
+        itemAccount.setFlag("In");
+        Integer itemmnum = itemService.findByName(item.getName()).getNumTotal(); //查询前台选中的物品所剩余的库存
+        ItemAccount returnAccount = itemAccountService
+                .findItemAccountByStuffAndItemAndFlag(loginService.getCurrentUser(), item , "OUT");  //根据用户和物品和标记查询借用记录
+        Item returnItem = returnAccount.getItem();
+        returnItem.setNumTotal(returnItem.getNumTotal() + LendNum);
+        if (returnItem.getStatus().equals("NOT_AVALIABLE") && LendNum > 0) {
+            returnItem.setStatus("AVALIABLE");
+        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        itemAccount.setTimeCheck(df.parse(df.format(new Date())));
+        try {
+            utx.begin();
+            itemAccountService.create(itemAccount);
+            logger.log(Level.INFO, "Added {0}", itemAccount);
+            return null;
+        }
+        finally {
+            utx.commit();
+        }
+    }
+
     @Named
     @RequestScoped
-    public List<ItemAccount> findLendRecordByItem(Item item){
+    public List<ItemAccount> findLendRecordByItem(Item item) {
         return itemAccountService.findLendRecordByItem(item);
     }
-    
+
     @Named
     @RequestScoped
-    public List<ItemAccount> findLendRecorByStuff(){
+    public List<ItemAccount> findLendRecorByStuff() {
         return null;
     }
 }
