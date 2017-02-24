@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 huanlu.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>ItemQuery</title>
+    </h:head>
+    <h:body>
+        <h:messages/>
+        <h:form>
+            <p:dataTable var="item" value="#{itemQueryManager.findAllItem()}" widgetVar="itemsTable"
+                         emptyMessage="No items found with given criteria" filteredValue="#{itemQueryManager.filterItems}"
+                         rows="15" paginator="true">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Search all fields:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" 
+                                     placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column filterBy="#{item.name}" headerText="Name" footerText="contains" filterMatchMode="contains">
+                    <h:outputText value="#{item.name}" />
+                </p:column>
+
+                <p:column filterBy="#{item.category.name}" headerText="Category" footerText="exact" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneMenu label="Category" onchange="PF('itemsTable').filter()" styleClass="width:300px;" 
+                                         converter="#{categoryConverterBean}">
+                            <f:selectItem itemLabel="--Select One--"/>
+                            <f:selectItems value="#{itemQueryManager.findAllCategorys()}" 
+                                           var="Category" itemValue="#{Category.name}" itemLabel="#{Category.name}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{item.category.name}" />
+                </p:column>
+
+                <p:column filterBy="#{item.status}" headerText="Status" footerText="equals" filterMatchMode="equals">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('itemsTable').filter()">
+                            <f:selectItem itemLabel="AVALIABLE" itemValue="AVALIABLE" />
+                            <f:selectItem itemLabel="NOT_AVALIABLE" itemValue="NOT_AVALIABLE" />
+                        </p:selectOneButton>
+                    </f:facet>
+                    <h:outputText value="#{item.status}" />
+                </p:column>
+
+                <p:column filterBy="#{item.dateBought}" headerText="DateBought" footerText="contains" 
+                          filterMatchMode="contains">
+                    <h:outputText value="#{item.dateBought.toString()}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" type="currency"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -60,9 +59,6 @@ public class CategoryManager {
 		this.categoryService = categoryService;
 	}
 
-	@Produces
-	@Named
-	@RequestScoped
 	public List<String> getNameByCategory() throws Exception {
 		List<String> catename = new ArrayList<>();
 		List<Category> categories = categoryService.findAllCategory();
@@ -74,9 +70,6 @@ public class CategoryManager {
 		return catename;
 	}
 
-	@Produces
-	@Named
-	@RequestScoped
 	public String addCategory() throws Exception {
 		try {
 			utx.begin();
@@ -103,9 +96,6 @@ public class CategoryManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Produces
-	@RequestScoped
-	@Named
 	public List<Category> getAllCategory() throws Exception {
 		try {
 			utx.begin();
