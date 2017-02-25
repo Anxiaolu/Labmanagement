@@ -50,7 +50,8 @@ limitations under the License.
             <div class="inner-bg">
                 <div class="container">
                     <h:messages />
-                    <p:dataTable id="dataTable" var="i" value="#{itemManager.allItem}" rows="5" paginator="true">
+                    <p:dataTable id="dataTable" var="i" value="#{itemManager.allItem}" 
+                                 rows="5" paginator="true" editable="true">
                         <f:facet name="header">Item List</f:facet>
                         <p:column headerText="ItemName">#{i.name}</p:column>
                         <p:column headerText="Status">#{i.status}</p:column>
@@ -58,6 +59,7 @@ limitations under the License.
                         <p:column headerText="Code">#{i.code}</p:column>
                         <p:column headerText="NumTotal">#{i.numTotal}</p:column>
                         <p:column headerText="Category">#{i.category.name}</p:column>
+                        <p:column></p:column>
                         <f:facet name="footer">
                             In total there are #{fn:length(userManager.stuffs)} Stuffs.
                         </f:facet>

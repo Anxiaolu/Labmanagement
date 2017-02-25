@@ -1,104 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 huanlu.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-    <meta charset="utf-8"/>
+      xmlns:p="http://primefaces.org/ui">
     <f:view>
-        <f:event type="preRenderView" listener="#{login.checkLogin}"/>
         <h:head>
-            <title>物品管理</title>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+            <title>314专属物品管理系统</title>
+            <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+            <link href="assets/css/datepicker3.css" rel="stylesheet"/>
+            <link href="assets/css/styles.css" rel="stylesheet"/>
             <link href="assets/css/table-style.css" rel="stylesheet"
                   type="css/text" />
             <link href="assets/css/form-elements.css" rel="stylesheet"
                   type="css/text" />
             <link href="assets/css/style.css" rel="stylesheet" type="css/text" />
+            <!--[if lt IE 9]>
+            <script src="js/html5shiv.js"></script>
+            <script src="js/respond.min.js"></script>
+            <![endif]-->
         </h:head>
-        <ui:composition template="template/template.xhtml">
-            <ui:define name="content">
-                <h:messages />
-                <h1>Items</h1>
-                <p:dataTable id="dataTable" value="#{itemManager.allItem}" var="i" rows="5" paginator="true">
-                    <p:column headerText="ItemName">#{i.name}</p:column>
-                    <p:column headerText="Status">#{i.status}</p:column>
-                    <p:column headerText="DateBought">#{i.dateBought}</p:column>
-                    <p:column headerText="Code">#{i.code}</p:column>
-                    <p:column headerText="NumTotal">#{i.numTotal}</p:column>
-                    <p:column headerText="Category">#{i.category.name}</p:column>
-                </p:dataTable>
-                <p:blockUI block="dataTable" trigger="dataTable">
-                    LOADING...<br />
-                    <p:graphicImage value="/assets/img/loading/loading.gif" />
-                </p:blockUI>
-                <h:dataTable value="#{categoryManager.allCategory}" var="c"
-                             headerClass="header" styleClass="table">
-                    <h:column>
-                        <f:facet name="header">
-                            分类ID
-                        </f:facet>
-                        <h:outputText value="#{c.id}" />
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            分类名称
-                        </f:facet>
-                        <h:outputText value="#{c.name}" />
-                    </h:column>
-                </h:dataTable>
-                <h1>Add Item</h1>
-                <h:form>
-                    <table>
-                        <tr>
-                            <td>物品名称</td>
-                            <td><h:inputText value="#{itemaddmanager.newItem.name}" id="itemname" 
-                                             required="true" requiredMessage="您还没有给您的物品定名字呢！"
-                                             validator="#{itemaddmanager.ItemAddValidator}">
-                                </h:inputText>
-                                <h:message for="itemname"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>上级目录</td>
-                            <td><h:selectOneMenu id="category_fk" value="#{itemaddmanager.newItem.category.id}" 
-                                                 converter="#{categoryConverterBean}" title="category" required="true"
-                                                 requiredMessage="请选择上级分类" >
-                                    <f:selectItem itemLabel="--选择分类--" />
-                                    <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
-                                </h:selectOneMenu>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>物品状态</td>
-                            <td><h:inputText value="#{itemaddmanager.newItem.status}" required="true" requiredMessage=""/></td>
-                        </tr>
-                        <tr>
-                            <td>物品总量</td>
-                            <td><h:inputText value="#{itemaddmanager.newItem.numTotal}" required="true" requiredMessage="您还没有说有多少个啊！"/></td>
-                        </tr>
-                        <tr>
-                            <td>物品简介</td>
-                            <td><h:inputText value="#{itemaddmanager.newItem.code}" required="true" requiredMessage="简单介绍一下物品来源吧！"/></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><h:commandButton action="#{itemaddmanager.addItem}"
-                                                 value="Add Item" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                </h:form>
-                <h:form>
-                    <h:inputText value="#{categoryManager.newcategory.name}" />
-                    <h:commandButton action="#{categoryManager.addCategory}"
-                                     value="Add Category" />
-                </h:form>
-            </ui:define>
-        </ui:composition>
+        <h:body>
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#"><span>Lumino</span>Admin</a>
+                        <ul class="user-menu">
+                            <li class="dropdown pull-right">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> #{login.loginUserName} <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                                    <li><a href="Stuff_modify.jsf"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                                    <li><p:link ><span class="glyphicon glyphicon-log-out"></span> Logout</p:link></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </nav>
+            <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+                <form role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search"/>
+                    </div>
+                </form>
+                <ul class="nav menu">
+                    <li class="active"><a href="home.jsf"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+                    <li><p:link href="NeedKnow.jsf"><span class="glyphicon glyphicon-th">Need&nbsp;Know</span> </p:link></li>
+                    <li><a href="charts.html"><span class="glyphicon glyphicon-stats"></span> Charts</a></li>
+                    <li><a href="LendItem.jsf"><span class="glyphicon glyphicon-list-alt"></span> Tables</a></li>
+                    <li><a href="forms.html"><span class="glyphicon glyphicon-pencil"></span> Forms</a></li>
+                    <li><a href="panels.html"><span class="glyphicon glyphicon-info-sign"></span> Alerts &amp; Panels</a></li>
+                    <li class="parent ">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-list"></span> Item Manager 
+                            <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right">
+                                <em class="glyphicon glyphicon-s glyphicon-plus"></em>
+                            </span> 
+                        </a>
+                        <ul class="children collapse" id="sub-item-1">
+                            <li>
+                                <a class="" href="Item.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Add Item
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Item_remove.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Drop Item
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Item_modify.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Modify Item
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="parent ">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-list"></span> User Manager 
+                            <span data-toggle="collapse" href="#sub-item-2" class="icon pull-right">
+                                <em class="glyphicon glyphicon-s glyphicon-plus"></em>
+                            </span> 
+                        </a>
+                        <ul class="children collapse" id="sub-item-2">
+                            <li>
+                                <a class="" href="users.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Add User
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Stuff_remove.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Drop User
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Stuff_modify.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Modify User
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a href="index.jsf"><span class="glyphicon glyphicon-user"></span> Login Page</a></li>
+                </ul>
+            </div><!--/.sidebar-->
+
+            <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+                <div class="row">
+                    <ui:composition template="template/template.xhtml">
+                        <ui:define name="content">
+                            <h:messages />
+                            <div class="col-xs-12 col-md-12 col-lg-12">
+                                <h1>Items</h1>
+                                <p:dataTable id="dataTable" value="#{itemManager.allItem}" var="i" 
+                                             scrollRows="20" scrollable="true" scrollHeight="200" 
+                                             lazy="true" rows="40">
+                                    <p:column headerText="ItemName">#{i.name}</p:column>
+                                    <p:column headerText="Status">#{i.status}</p:column>
+                                    <p:column headerText="DateBought">#{i.dateBought}</p:column>
+                                    <p:column headerText="Code">#{i.code}</p:column>
+                                    <p:column headerText="NumTotal">#{i.numTotal}</p:column>
+                                    <p:column headerText="Category">#{i.category.name}</p:column>
+                                </p:dataTable>
+                                <p:blockUI block="dataTable" trigger="dataTable">
+                                    LOADING...<br />
+                                    <p:graphicImage value="/assets/img/loading/loading.gif" />
+                                </p:blockUI>
+                            </div>
+                            <div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 30px;">
+                                <p:dataTable value="#{categoryManager.allCategory}" var="c"
+                                             styleClass="table" lazy="true" rows="40"
+                                             scrollRows="20" scrollable="true" scrollHeight="130" >
+                                    <p:column headerText="分类ID">
+                                        #{c.id}
+                                    </p:column>
+                                    <p:column headerText="上级分类名称">
+                                        #{c.name}
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            <div class="col-xs-12 col-md-12 col-lg-12">
+                                <div style="text-align: center; margin: 0 auto; vertical-align: middle;">
+                                    <h1>Add Item</h1>
+                                    <h:form>
+                                        <table style="margin: 0 auto;">
+                                            <tr>
+                                                <td>物品名称</td>
+                                                <td><p:inputText value="#{itemaddmanager.newItem.name}" id="itemname" 
+                                                                 required="true" requiredMessage="您还没有给您的物品定名字呢！"
+                                                                 validator="#{itemaddmanager.ItemAddValidator}">
+                                                    </p:inputText>
+                                                    <h:message for="itemname"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>上级目录</td>
+                                                <td><p:selectOneMenu id="category_fk" value="#{itemaddmanager.newItem.category.id}" 
+                                                                     converter="#{categoryConverterBean}" title="category" required="true"
+                                                                     requiredMessage="请选择上级分类" >
+                                                        <f:selectItem itemLabel="--选择分类--" />
+                                                        <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
+                                                    </p:selectOneMenu>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>物品状态</td>
+                                                <td><p:inputText value="#{itemaddmanager.newItem.status}" required="true" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>物品总量</td>
+                                                <td><p:inputText value="#{itemaddmanager.newItem.numTotal}" required="true" requiredMessage="您还没有说有多少个啊！"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>物品编码</td>
+                                                <td><p:inputText value="#{itemaddmanager.newItem.code}" required="true" requiredMessage="简单介绍一下物品来源吧！"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>物品购入日期(日/月/年)</td>
+                                                <td><p:calendar value="#{itemaddmanager.newItem.dateBought}" id="datebought">
+                                                    </p:calendar>
+                                                    <h:message for="datebought"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td><p:commandButton action="#{itemaddmanager.addItem}"
+                                                                     value="Add Item" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </h:form>
+                                    <h:form style="margin: 0 auto;">
+                                        <p:inputText value="#{categoryManager.newcategory.name}" />
+                                        <p:commandButton action="#{categoryManager.addCategory}"
+                                                         value="Add Category" />
+                                    </h:form>
+                                </div>
+                            </div>
+                        </ui:define>
+                    </ui:composition>
+                </div><!--/.row-->
+            </div>	<!--/.main-->
+            <script src="assets/js/jquery-1.11.1.min.js"></script>
+            <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+            <script src="assets/js/chart.min.js"></script>
+            <script src="assets/js/chart-data.js"></script>
+            <script src="assets/js/easypiechart.js"></script>
+            <script src="assets/js/easypiechart-data.js"></script>
+            <script src="assets/bootstrap/js/bootstrap-datepicker.js"></script>
+            <script>
+                $('#calendar').datepicker({
+                });
+
+                !function ($) {
+                    $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
+                        $(this).find('em:first').toggleClass("glyphicon-minus");
+                    });
+                    $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+                }(window.jQuery);
+
+                $(window).on('resize', function () {
+                    if ($(window).width() > 768)
+                        $('#sidebar-collapse').collapse('show')
+                })
+            </script>
+        </h:body>
     </f:view>
 </html>

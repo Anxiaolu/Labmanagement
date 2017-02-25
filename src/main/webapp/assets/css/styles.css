@@ -42,6 +42,10 @@ h3, h4 {
 	color: #9fadbb;
 }
 
+#weld-dev-mode-info{
+    display: none !important;
+}
+
 .color-gray { color: #5f6468; }
 .color-blue { color: #30a5ff; }
 .color-teal { color: #1ebfae; }
