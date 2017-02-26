@@ -294,7 +294,10 @@ button:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }
 
 button:active:focus, button.active:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }
 
-
+.loading{
+    width: 60px;
+    height: 60px;
+}
 
 
 /***** Media queries *****/
