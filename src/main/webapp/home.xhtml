@@ -51,7 +51,7 @@ limitations under the License.
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                                     <li><a href="Stuff_modify.jsf"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-                                    <li><p:link onclick="#{login.logout()}"><span class="glyphicon glyphicon-log-out"></span> Logout</p:link></li>
+                                    <li style="padding-left: 20px;"><h:form><p:commandButton action="#{login.logout}" value="LogOut" styleClass="logout"><span class="glyphicon glyphicon-log-out"></span> </p:commandButton></h:form></li>
                                 </ul>
                             </li>
                         </ul>

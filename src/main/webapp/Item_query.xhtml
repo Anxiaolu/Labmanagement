@@ -23,6 +23,7 @@ limitations under the License.
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
+        <f:event type="preRenderView" listener="#{login.checkLogin}"/>
         <title>PrimeFaces and Boostrap test</title>
         <!-- CSS -->
         <link rel="stylesheet"

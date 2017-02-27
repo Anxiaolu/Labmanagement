@@ -22,6 +22,7 @@ limitations under the License.
       xmlns:p="http://primefaces.org/ui"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <f:view>
+        <f:event type="preRenderView" listener="#{login.checkLogin}"/>
         <h:head>
             <meta charset="utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
@@ -58,7 +59,7 @@ limitations under the License.
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                                     <li><a href="Stuff_modify.jsf"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-                                    <li><p:link ><span class="glyphicon glyphicon-log-out"></span> Logout</p:link></li>
+                                    <li style="padding-left: 20px;"><h:form><p:commandButton action="#{login.logout}" value="LogOut" styleClass="logout"><span class="glyphicon glyphicon-log-out"></span> </p:commandButton></h:form></li>
                                 </ul>
                             </li>
                         </ul>
@@ -160,7 +161,7 @@ limitations under the License.
                             <div class="form-bottom">
                                 <h:form role="form" class="login-form"
                                         id="loginForm">
-                                    <h:panelGrid columns="1" rendered="#{!login.loggedIn}">
+                                    <h:panelGrid columns="1" >
                                         <h:messages/>
                                         <div class="form-group">
                                             <p:inputText

@@ -6,6 +6,7 @@
       xmlns:p="http://primefaces.org/ui">
     <meta charset="utf-8"/>
     <f:view>
+        <f:event type="preRenderView" listener="#{login.checkLogin}"/>
         <h:head>
             <title>LendOut</title>
             <link href="assets/css/table-style.css" rel="stylesheet"
