@@ -36,44 +36,38 @@ import javax.inject.Inject;
 @FacesConverter(forClass = Category.class, value = "categoryConverter")
 public class CategoryConverter implements Converter, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	// private static final Logger logger =
-	// Logger.getLogger(CategoryConverter.class.getName());
+    // private static final Logger logger =
+    // Logger.getLogger(CategoryConverter.class.getName());
+    @Inject
+    CategoryFacade categoryservice;
 
-	@Inject
-	CategoryFacade categoryservice;
+    //@PersistenceContext() private transient EntityManager em;
+    @Inject
+    FacesContext facescontext;
 
-	
-	//@PersistenceContext() private transient EntityManager em;
-	 
+    @Override
+    public Object getAsObject(FacesContext ctx, UIComponent component, String value) throws ConverterException {
 
-	@Inject
-	FacesContext facescontext;
+        if (!value.equals("") && value != null) {
+            String Catname = value;
+            System.out.println("前台返回的实体名字" + Catname);
+            Category category = categoryservice.findCategoryByName(Catname);
+            System.out.println("查询到的实体：" + category.getId() + "，名字：" + category.getName());
+            int categoryid = category.getId();
+            return categoryid;
+        }
+        return null;
+    }
 
-	@Override
-	public Object getAsObject(FacesContext ctx, UIComponent component, String value) throws ConverterException {
-
-		if (!value.equals("") && value != null) {
-			//int Catid = Integer.parseInt(value);
-                        String Catname = value;
-			System.out.println("前台返回的实体名字" + Catname);
-			Category category = categoryservice.findCategoryByName(Catname);
-			System.out.println("查询到的实体：" + category.getId() + "，名字：" + category.getName());
-                        int categoryid = category.getId();
-			return categoryid;
-		}
-		return null;
-	}
-
-      
-	@Override
-	public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-		if (o instanceof Category)
-			return String.valueOf(((Category) o));
-		else {
-			return null;
-		}
-	}
+    @Override
+    public String getAsString(FacesContext fc, UIComponent uic, Object o) {
+        if (o instanceof Category) {
+            return String.valueOf(((Category) o));
+        } else {
+            return null;
+        }
+    }
 
 }

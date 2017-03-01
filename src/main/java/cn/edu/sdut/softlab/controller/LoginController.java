@@ -24,7 +24,6 @@ import cn.edu.sdut.softlab.service.StuffFacade;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
@@ -72,14 +71,11 @@ public class LoginController implements Serializable {
         }
         return "/home.xhtml?faces-redirect=true";
     }
-    
-    
-    @Named
-    @RequestScoped
-    public void validateStuffName(FacesContext fc,UIComponent uc, Object value){
+
+    public void validateStuffName(FacesContext fc, UIComponent uc, Object value) {
         List<String> stuffnameList = stuffService.findAllStuffName();
         Iterator it = stuffnameList.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             if (!it.equals(value)) {
                 continue;
             }
@@ -99,21 +95,17 @@ public class LoginController implements Serializable {
         currentUser = null;
         return "/index.xhtml?faces-redirect=true";
     }
-    
-    @Named
-    @SessionScoped
-    public void checkLogin(ComponentSystemEvent event){
-        if(!isLoggedIn()){
+
+    public void checkLogin(ComponentSystemEvent event) {
+        if (!isLoggedIn()) {
             FacesContext context = facesContext.getCurrentInstance();
-            ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler)context.
+            ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) context.
                     getApplication().getNavigationHandler();
             handler.performNavigation("index");
         }
     }
-    
-    @Named
-    @RequestScoped
-    public String getLoginUserName(){
+
+    public String getLoginUserName() {
         if (isLoggedIn()) {
             return this.getCurrentUser().getUsername();
         }

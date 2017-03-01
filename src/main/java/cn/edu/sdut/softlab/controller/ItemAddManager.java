@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -64,9 +63,6 @@ public class ItemAddManager extends IllegalValidator{
         this.newItem = newItem;
     }
 
-    @Produces
-    @Named
-    @RequestScoped
     public List<Category> AllCategory() throws Exception {
         return categoryservice.findAll(Category.class);
     }
@@ -97,7 +93,7 @@ public class ItemAddManager extends IllegalValidator{
                 utx.begin();
                 itemService.create(newItem);
                 logger.log(Level.INFO, "Added {0}", newItem);
-                return "/Item.xhtml?faces-redirect=true";
+                return null;
             }
             finally {
                 utx.commit();
@@ -106,9 +102,7 @@ public class ItemAddManager extends IllegalValidator{
             return "/Error.xhtml?faces-redirect=true";
         }
     }
-
-    @Named
-    @RequestScoped
+    
     public void ItemAddValidator(FacesContext fc, UIComponent component, Object value) {
         AddValidator(value);
         List<Item> itemList = itemService.findAll(Item.class);

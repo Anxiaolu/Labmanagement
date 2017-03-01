@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -16,13 +15,10 @@ import cn.edu.sdut.softlab.model.Item;
 import cn.edu.sdut.softlab.service.CategoryFacade;
 import cn.edu.sdut.softlab.service.ItemFacade;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 
 @Named("itemManager")
 @RequestScoped
@@ -42,7 +38,7 @@ public class ItemManager {
 
     @Inject
     CategoryFacade categoryservice;
-    
+
     @Inject
     FacesContext facesContext;
 
@@ -82,8 +78,6 @@ public class ItemManager {
         this.dateBought = dateBought;
     }
 
-    
-
     public Integer getNumTotal() {
         return numTotal;
     }
@@ -99,8 +93,6 @@ public class ItemManager {
     public void setCategoryid(Integer categoryid) {
         this.categoryid = categoryid;
     }
-
-    
 
     // 从前台获取待删物品
     private Item currentItem = new Item();
@@ -121,10 +113,6 @@ public class ItemManager {
         this.name = name;
     }
 
-    @SuppressWarnings("unchecked")
-    @Produces
-    @Named
-    @RequestScoped
     public List<Item> getAllItem() throws Exception {
         try {
             utx.begin();
@@ -143,7 +131,6 @@ public class ItemManager {
      * @return 生成的name属性集合
      * @throws Exception
      */
-    @RequestScoped
     public List<String> getAllItemName() throws Exception {
         List<String> itemname = new ArrayList<>();
         List<Item> itemlist = getAllItem();
@@ -152,21 +139,6 @@ public class ItemManager {
         }
         return itemname;
     }
-    
-    @Named
-    @RequestScoped
-    public void validateStuffName(FacesContext fc,UIComponent uc, Object value){
-        List<String> itemnameList = itemService.getAllItemName();
-        Iterator it = itemnameList.iterator();
-        while(it.hasNext()){
-            if (!it.equals(value)) {
-                continue;
-            }
-            if (it.hasNext()) {
-                throw new ValidatorException(new FacesMessage("库存中没有这种物品！"));
-            }
-        }
-    }
 
     /**
      * 根据前台输入的名字查找数据库删除对应的item对象
@@ -174,18 +146,25 @@ public class ItemManager {
      * @return 指定url地址（对相应页面的刷新）
      * @throws Exception
      */
-    @RequestScoped
     public String removeItem() throws Exception {
-        Item temporitem = itemService.findByName(credentials.getName());
-        if (temporitem != null) {
-            currentItem = temporitem;
+        try {
+            Item temporitem = itemService.findByName(this.getName());
+            if (temporitem != null) {
+                currentItem = temporitem;
+            }
+            utx.begin();
+            itemService.remove(currentItem);
+            utx.commit();
+            facesContext.addMessage(null, new FacesMessage("您选中的物品已经删除！"));
+
         }
-        utx.begin();
-        itemService.remove(currentItem);
-        utx.commit();
-        facesContext.addMessage(null, new FacesMessage("您选中的物品已经删除！"));
-        logger.log(Level.INFO, "Added {0}");
-        return "/RemoveItem.xhtml?faces-redirect=true";
+        catch (Exception e) {
+            facesContext.addMessage(null, new FacesMessage("您输入的物品不存在！"));
+
+        }
+
+            logger.log(Level.INFO, "Added {0}");
+            return "/RemoveItem.xhtml?faces-redirect=true";
     }
 
     /**
@@ -194,7 +173,6 @@ public class ItemManager {
      * @return 指定url地址（对相应页面的刷新）
      * @throws Exception
      */
-    @RequestScoped
     public String editItem() throws Exception {
         utx.begin();
         Item updateitem = itemService.findByName(this.getItemname());
@@ -215,8 +193,8 @@ public class ItemManager {
             updateitem.setDateBought(this.dateBought);
         }
         if (updateitem.getCategory() != null) {
-           //updateitem.setCategory(categoryservice.findCategoryById(this.getCategory().getId()));
-           updateitem.setCategory(categoryservice.findCategoryById(this.categoryid));
+            //updateitem.setCategory(categoryservice.findCategoryById(this.getCategory().getId()));
+            updateitem.setCategory(categoryservice.findCategoryById(this.categoryid));
         }
         if (updateitem.getNumTotal() > 0) {
             updateitem.setStatus("AVALIABLE");
@@ -225,10 +203,9 @@ public class ItemManager {
         }
         em.merge(updateitem);
         utx.commit();
-        return "/Item_query.xhtml?faces-redirect=true";
+        return "/Item_modify.xhtml?faces-redirect=true";
     }
 
-    @RequestScoped
     public List<Item> getAvaliableItem() throws Exception {
         List<Item> items = this.getAllItem();
         List<Item> itemsavb = new ArrayList<>();
@@ -240,7 +217,6 @@ public class ItemManager {
         return itemsavb;
     }
 
-    @RequestScoped
     public List<Item> getNotAvaliableItem() throws Exception {
         List<Item> items = this.getAllItem();
         List<Item> itemsnoavb = new ArrayList<>();

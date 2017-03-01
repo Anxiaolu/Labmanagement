@@ -25,10 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
-import javax.inject.Named;
 
 @Stateless
-@Named("item")
 public class ItemFacade extends AbstractFacade<Item> {
 
     public ItemFacade() {

@@ -15,6 +15,7 @@
  */
 package cn.edu.sdut.softlab.controller;
 
+import cn.edu.sdut.softlab.model.Category;
 import cn.edu.sdut.softlab.model.Item;
 import cn.edu.sdut.softlab.model.QueryCondition;
 import cn.edu.sdut.softlab.model.QueryParameter;
@@ -40,7 +41,7 @@ import javax.inject.Named;
 import javax.transaction.UserTransaction;
 
 /**
- *
+ * 不定条件查询
  * @author huanlu
  */
 @Named("itemQueryManager")
@@ -64,6 +65,16 @@ public class ItemQueryManager {
 
     @Inject
     FacesContext facesContext;
+    
+    private List<Item> filterItems;
+
+    public List<Item> getFilterItems() {
+        return filterItems;
+    }
+
+    public void setFilterItems(List<Item> filterItems) {
+        this.filterItems = filterItems;
+    }
 
     private Integer categoryid;
     private String code;
@@ -102,6 +113,31 @@ public class ItemQueryManager {
         this.dateBought = dateBought;
     }
 
+    public List<Item> findAllItem(){
+        return itemService.findAll(Item.class);
+    }
+    
+    public List<Category> findAllCategorys(){
+        List<Category> categorys =  new ArrayList<>();
+        for(Item i: this.findAllItem()){
+            if (categorys.contains(i.getCategory())) {
+                continue;
+            }
+            else{
+                categorys.add(i.getCategory());
+            }
+        }
+        return categorys;
+    }
+    
+    public List<String> findAllCategoryName(){
+        List<String> categorys =  new ArrayList<>();
+        for(Category c: categoryService.findAll(Category.class)){
+            categorys.add(c.getName());
+        }
+        return categorys;
+    }
+    
     /**
      * 用于检测在筛选物品的时候输入的日期不合法
      *
@@ -109,8 +145,6 @@ public class ItemQueryManager {
      * @param component
      * @param value //前台传入的日期参数
      */
-    @Named
-    @RequestScoped
     public void validateQueryDate(FacesContext fc, UIComponent component, Object value) {
         SimpleDateFormat formatdate = new SimpleDateFormat("yyyy-MM-dd");
         if (!((String) value).contains("-")) {
@@ -165,8 +199,6 @@ public class ItemQueryManager {
      * @return
      * @throws Exception
      */
-    @Named
-    @RequestScoped
     public QueryCondition pushQueryItemParameters() throws Exception {
         //形成参数列表
         List<QueryParameter> parameters = new ArrayList<>();
@@ -207,8 +239,6 @@ public class ItemQueryManager {
      * @return 符合条件的筛选完成地Item对象
      * @throws Exception
      */
-    @Named
-    @RequestScoped
     public List<Item> getQueryItem() throws Exception {
 
         List<Item> queryitemList = new ArrayList<>();
@@ -226,8 +256,6 @@ public class ItemQueryManager {
         return queryitemList;
     }
 
-    @Named
-    @RequestScoped
     public void getValidateParameters(ComponentSystemEvent event) throws ParseException {
         UIComponent source = event.getComponent();
         UIInput categoryidComponent = (UIInput) source.findComponent("categoryid");

@@ -22,12 +22,12 @@ import cn.edu.sdut.softlab.model.Stuff;
 import cn.edu.sdut.softlab.service.StuffFacade;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -56,7 +56,10 @@ public class StuffManagerImpl extends IllegalValidator implements StuffManager {
 
     @Inject
     EntityManager em;
-
+    
+    @Inject
+    FacesContext facesContext;
+    
     private Stuff currenstuff = null;
 
     public String getEmail() {
@@ -98,10 +101,6 @@ public class StuffManagerImpl extends IllegalValidator implements StuffManager {
         this.newStuff = newStuff;
     }
 
-    @Override
-    @Produces
-    @Named
-    @RequestScoped
     public List<Stuff> getStuffs() throws Exception {
         try {
             utx.begin();
@@ -112,7 +111,6 @@ public class StuffManagerImpl extends IllegalValidator implements StuffManager {
         }
     }
 
-    @Override
     public String addStuff() throws Exception {
         try {
             utx.begin();
@@ -124,9 +122,7 @@ public class StuffManagerImpl extends IllegalValidator implements StuffManager {
             utx.commit();
         }
     }
-
-    @Named
-    @RequestScoped
+    
     public List<String> getAllStuffName() throws Exception {
         List<String> stuffnamelist = new ArrayList<>();
         List<Stuff> stufflist = getStuffs();
@@ -136,9 +132,8 @@ public class StuffManagerImpl extends IllegalValidator implements StuffManager {
         return stuffnamelist;
     }
 
-    @Named
-    @RequestScoped
     public String removeStuff() throws Exception {
+        try {
         Stuff temporstuff = userService.findByName(credentials.getName());
         if (temporstuff != null) {
             currenstuff = temporstuff;
@@ -146,12 +141,28 @@ public class StuffManagerImpl extends IllegalValidator implements StuffManager {
         utx.begin();
         userService.remove(currenstuff);
         utx.commit();
+        facesContext.addMessage(null, new FacesMessage("您输入的用户已经删除！"));
+        }
+        catch(Exception e){
+            facesContext.addMessage(null, new FacesMessage("没有您要删除的用户！"));
+        }
         logger.log(Level.INFO, "Added {0}", newStuff);
         return "/userdelect.xhtml?faces-redirect=true";
     }
+    
+    public void validatorRemoveName(FacesContext fc,UIComponent uc, Object value){
+        List<String> stuffs = userService.findAllStuffName();
+        Iterator it = stuffs.iterator();
+        while(it.hasNext()){
+            if (!it.equals(value)) {
+                continue;
+            }
+            if (!it.hasNext()) {
+                throw new ValidatorException(new FacesMessage("没有该用户！"));
+            }
+        }
+    }
 
-    @Named
-    @RequestScoped
     public String editStuff() throws Exception {
         utx.begin();
         Stuff updatestuff = userService.findByName(currentstuffname);
@@ -172,8 +183,6 @@ public class StuffManagerImpl extends IllegalValidator implements StuffManager {
         return "/Stuff_query.xhtml?faces-redirect=true";
     }
 
-    @Named
-    @RequestScoped
     public void StuffAddValidator(FacesContext fc, UIComponent component, Object value) throws Exception {
         AddValidator(value);
         List<String> stuffNamelist = getAllStuffName();

@@ -14,31 +14,40 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <f:view>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
         <f:event type="preRenderView" listener="#{login.checkLogin}"/>
-        <h:head>
-            <meta charset="utf-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-            <title>314专属物品管理系统</title>
-            <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-            <link href="assets/css/datepicker3.css" rel="stylesheet"/>
-            <link href="assets/css/styles.css" rel="stylesheet"/>
-            <link href="assets/css/table-style.css" rel="stylesheet"
-                  type="css/text" />
-            <link href="assets/css/form-elements.css" rel="stylesheet"
-                  type="css/text" />
-            <link href="assets/css/style.css" rel="stylesheet" type="css/text" />
-            <!--[if lt IE 9]>
-            <script src="js/html5shiv.js"></script>
-            <script src="js/respond.min.js"></script>
-            <![endif]-->
-        </h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+        <title>Item_query_filter</title>
+        <!-- CSS -->
+        <link rel="stylesheet"
+              href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500" />
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet"
+              href="assets/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="assets/css/form-elements.css" />
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="assets/css/datepicker3.css" rel="stylesheet"/>
+        <link href="assets/css/styles.css" rel="stylesheet"/>
+        <script src="assets/" />
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </h:head>
+    <h:body>
         <h:body>
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container-fluid">
@@ -71,8 +80,8 @@ limitations under the License.
                 </form>
                 <ul class="nav menu">
                     <li class="active"><a href="home.jsf"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-                    <li><p:link href="ReadyKnow.jsf"><span class="glyphicon glyphicon-th">Ready&nbsp;To&nbsp;Know</span> </p:link></li>
-                    <li><a href="Item_query_filter.jsf"><span class="glyphicon glyphicon-stats"></span> Item&nbsp;Filter</a></li>
+                    <li><p:link href="NeedKnow.jsf"><span class="glyphicon glyphicon-th">Ready&nbsp;To&nbsp;Know</span> </p:link></li>
+                    <li><a href="charts.html"><span class="glyphicon glyphicon-stats"></span> Charts</a></li>
                     <li><a href="LendItem.jsf"><span class="glyphicon glyphicon-list-alt"></span> LendItem</a></li>
                     <li><a href="forms.html"><span class="glyphicon glyphicon-pencil"></span> Forms</a></li>
                     <li><a href="panels.html"><span class="glyphicon glyphicon-info-sign"></span> Alerts &amp; Panels</a></li>
@@ -129,100 +138,59 @@ limitations under the License.
                     <li role="presentation" class="divider"></li>
                     <li><a href="index.jsf"><span class="glyphicon glyphicon-user"></span> Login Page</a></li>
                 </ul>
-            </div><!--/.sidebar--> 
+            </div><!--/.sidebar-->
 
             <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
                 <div class="row">
-                    <h:messages for="itemaddform"/>
-                    <div class="col-xs-12 col-md-12 col-lg-12" style="margin-bottom: 50px;">
-                        <h1>Items</h1>
-                        <p:dataTable id="dataTable" value="#{itemManager.allItem}" var="i" 
-                                     scrollRows="20" scrollable="true" scrollHeight="200" 
-                                     lazy="true" rows="40">
-                            <p:column headerText="ItemName">#{i.name}</p:column>
-                            <p:column headerText="Status">#{i.status}</p:column>
-                            <p:column headerText="DateBought">#{i.dateBought}</p:column>
-                            <p:column headerText="Code">#{i.code}</p:column>
-                            <p:column headerText="NumTotal">#{i.numTotal}</p:column>
-                            <p:column headerText="Category">#{i.category.name}</p:column>
-                        </p:dataTable>
-                        <p:blockUI block="dataTable" trigger="dataTable">
-                            LOADING...<br />
-                            <p:graphicImage value="/assets/img/loading/loading.gif" />
-                        </p:blockUI>
-                    </div>
-                    <div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 30px;">
-                        <p:dataTable value="#{categoryManager.allCategory}" var="c"
-                                     styleClass="table" lazy="true" rows="40"
-                                     scrollRows="20" scrollable="true" scrollHeight="130" >
-                            <p:column headerText="分类ID">
-                                #{c.id}
-                            </p:column>
-                            <p:column headerText="上级分类名称">
-                                #{c.name}
-                            </p:column>
-                        </p:dataTable>
-                    </div>
+                    <h:messages/>
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <div style="text-align: center; margin: 0 auto; vertical-align: middle;">
-                            <h1>Add Item</h1>
-                            <h:form id="itemaddform">
-                                <table style="margin: 0 auto;">
-                                    <tr>
-                                        <td>物品名称</td>
-                                        <td><p:inputText value="#{itemaddmanager.newItem.name}" id="itemname" 
-                                                         required="true" requiredMessage="您还没有给您的物品定名字呢！"
-                                                         validator="#{itemaddmanager.ItemAddValidator}">
-                                            </p:inputText>
-                                            <h:message for="itemname"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>上级目录</td>
-                                        <td><h:selectOneMenu id="category_fk" value="#{itemaddmanager.newItem.category.id}" 
-                                                             converter="#{categoryConverterBean}" title="category" required="true"
-                                                             requiredMessage="请选择上级分类" >
-                                                <f:selectItem itemLabel="--选择分类--" />
-                                                <f:selectItems value="#{categoryManager.allCategory}" var="Category" itemValue="#{Category.id}" itemLabel="#{Category.name}"/>
-                                            </h:selectOneMenu>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>物品状态</td>
-                                        <td><p:inputText value="#{itemaddmanager.newItem.status}" required="true" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>物品总量</td>
-                                        <td><p:inputText value="#{itemaddmanager.newItem.numTotal}" required="true" requiredMessage="您还没有说有多少个啊！"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>物品编码</td>
-                                        <td><p:inputText value="#{itemaddmanager.newItem.code}" required="true" requiredMessage="简单介绍一下物品来源吧！"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>物品购入日期(日/月/年)</td>
-                                        <td><p:calendar value="#{itemaddmanager.newItem.dateBought}" id="datebought">
-                                            </p:calendar>
-                                            <h:message for="datebought"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td><p:commandButton action="#{itemaddmanager.addItem}"
-                                                             value="Add Item" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
-                            </h:form>
-                            <h:form style="margin: 0 auto;">
-                                <p:inputText value="#{categoryManager.newcategory.name}" />
-                                <p:commandButton action="#{categoryManager.addCategory}"
-                                                 value="Add Category" />
-                            </h:form>
-                        </div>
+                    <h:form>
+                        <p:dataTable var="item" value="#{itemQueryManager.findAllItem()}" widgetVar="itemsTable"
+                                     emptyMessage="No items found with given criteria" filteredValue="#{itemQueryManager.filterItems}"
+                                     rows="15" paginator="true">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" 
+                                                 placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column filterBy="#{item.name}" headerText="Name" footerText="contains" filterMatchMode="contains">
+                                <h:outputText value="#{item.name}" />
+                            </p:column>
+
+                            <p:column filterBy="#{item.category.id}" headerText="Category" footerText="exact" filterMatchMode="exact"
+                                      >
+                                <f:facet name="filter">
+                                    <h:selectOneMenu label="Category" onchange="PF('itemsTable').filter()" styleClass="width:300px;" 
+                                                     converter="#{categoryConverterBean}">
+                                        <f:selectItem itemLabel="--Select One--"/>
+                                        <f:selectItems value="#{itemQueryManager.findAllCategorys()}" 
+                                                       var="Category" itemValue="#{Category.name}" itemLabel="#{Category.name}"/>
+                                    </h:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{item.category.name}" />
+                            </p:column>
+
+                            <p:column filterBy="#{item.status}" headerText="Status" footerText="equals" filterMatchMode="equals">
+                                <f:facet name="filter">
+                                    <p:selectOneButton onchange="PF('itemsTable').filter()">
+                                        <f:selectItem itemLabel="AVALIABLE" itemValue="AVALIABLE" />
+                                        <f:selectItem itemLabel="NOT_AVALIABLE" itemValue="NOT_AVALIABLE" />
+                                    </p:selectOneButton>
+                                </f:facet>
+                                <h:outputText value="#{item.status}" />
+                            </p:column>
+
+                            <p:column filterBy="#{item.dateBought}" headerText="DateBought" footerText="contains" 
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{item.dateBought.toString()}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd" type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
                     </div>
                 </div><!--/.row-->
             </div>	<!--/.main-->
@@ -250,5 +218,5 @@ limitations under the License.
                 })
             </script>
         </h:body>
-    </f:view>
+    </h:body>
 </html>

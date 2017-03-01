@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 Copyright 2017 huanlu.
 
@@ -13,51 +14,132 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <h:head>
-        <title>PrimeFaces and Boostrap test</title>
-        <!-- CSS -->
-        <link rel="stylesheet"
-              href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500" />
-        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet"
-              href="assets/font-awesome/css/font-awesome.min.css" />
-        <link rel="stylesheet" href="assets/css/form-elements.css" />
-        <link rel="stylesheet" href="assets/css/style.css" />
-        <script src="assets/"/>
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <f:view>
+        <f:event type="preRenderView" listener="#{login.checkLogin}"/>
+        <h:head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+            <title>314专属物品管理系统</title>
+            <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+            <link href="assets/css/datepicker3.css" rel="stylesheet"/>
+            <link href="assets/css/styles.css" rel="stylesheet"/>
+            <link href="assets/css/table-style.css" rel="stylesheet"
+                  type="css/text" />
+            <link href="assets/css/style.css" rel="stylesheet" type="css/text" />
+            <link rel="stylesheet"
+                  href="assets/font-awesome/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="assets/css/form-elements.css" />
+            <link rel="stylesheet" href="assets/css/style.css" />
+            <!--[if lt IE 9]>
+            <script src="js/html5shiv.js"></script>
+            <script src="js/respond.min.js"></script>
+            <![endif]-->
+        </h:head>
+        <h:body>
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#"><span>Lumino</span>Admin</a>
+                        <ul class="user-menu">
+                            <li class="dropdown pull-right">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> #{login.loginUserName} <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                                    <li><a href="Stuff_modify.jsf"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                                    <li style="padding-left: 20px;"><h:form><p:commandButton action="#{login.logout}" value="LogOut" styleClass="logout"><span class="glyphicon glyphicon-log-out"></span> </p:commandButton></h:form></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </nav>
+            <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+                <form role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search"/>
+                    </div>
+                </form>
+                <ul class="nav menu">
+                    <li class="active"><a href="home.jsf"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+                    <li><p:link href="NeedKnow.jsf"><span class="glyphicon glyphicon-th">Need&nbsp;Know</span> </p:link></li>
+                    <li><a href="Item_query_filter.jsf"><span class="glyphicon glyphicon-stats"></span> Item&nbsp;Filter</a></li>
+                    <li><a href="LendItem.jsf"><span class="glyphicon glyphicon-list-alt"></span> LendItem</a></li>
+                    <li><a href="forms.html"><span class="glyphicon glyphicon-pencil"></span> Forms</a></li>
+                    <li><a href="panels.html"><span class="glyphicon glyphicon-info-sign"></span> Alerts &amp; Panels</a></li>
+                    <li class="parent ">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-list"></span> Item Manager 
+                            <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right">
+                                <em class="glyphicon glyphicon-s glyphicon-plus"></em>
+                            </span> 
+                        </a>
+                        <ul class="children collapse" id="sub-item-1">
+                            <li>
+                                <a class="" href="Item.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Add Item
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Item_remove.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Drop Item
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Item_modify.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Modify Item
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="parent ">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-list"></span> User Manager 
+                            <span data-toggle="collapse" href="#sub-item-2" class="icon pull-right">
+                                <em class="glyphicon glyphicon-s glyphicon-plus"></em>
+                            </span> 
+                        </a>
+                        <ul class="children collapse" id="sub-item-2">
+                            <li>
+                                <a class="" href="users.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Add User
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Stuff_remove.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Drop User
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="Stuff_modify.jsf">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Modify User
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a href="index.jsf"><span class="glyphicon glyphicon-user"></span> Login Page</a></li>
+                </ul>
+            </div><!--/.sidebar-->
 
-        <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="assets/ico/favicon.png" />
-        <link rel="apple-touch-icon-precomposed" sizes="144x144"
-              href="assets/ico/apple-touch-icon-144-precomposed.png" />
-        <link rel="apple-touch-icon-precomposed" sizes="114x114"
-              href="assets/ico/apple-touch-icon-114-precomposed.png" />
-        <link rel="apple-touch-icon-precomposed" sizes="72x72"
-              href="assets/ico/apple-touch-icon-72-precomposed.png" />
-        <link rel="apple-touch-icon-precomposed"
-              href="assets/ico/apple-touch-icon-57-precomposed.png" />
-    </h:head>
-    <h:body>
-
-        <!-- Top content -->
-        <div class="top-content">
-
-            <div class="inner-bg">
-                <div class="container">
-                    <h:messages />
-                    <p:dataTable var="i" value="#{itemManager.allItem}" rows="5" paginator="true">
+            <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <h:messages />
+                    <p:dataTable var="i" value="#{itemManager.allItem}" lazy="true" rows="40"
+                                     scrollRows="20" scrollable="true" scrollHeight="300">
                         <f:facet name="header">Item List</f:facet>
                         <p:column headerText="ItemName">#{i.name}</p:column>
                         <p:column headerText="Status">#{i.status}</p:column>
@@ -65,16 +147,6 @@ limitations under the License.
                         <p:column headerText="NumTotal">#{i.numTotal}</p:column>
                         <p:column headerText="Category">#{i.category.name}</p:column>>
                     </p:dataTable>
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1>
-                                <strong>314Lab</strong> Management
-                            </h1>
-                            <div class="description">
-                                <p>Powered By 314!</p>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3 form-box">
                             <div class="form-top">
@@ -89,40 +161,49 @@ limitations under the License.
                             <div class="form-bottom">
                                 <h:form role="form" class="login-form"
                                         id="loginForm">
-                                    <h:panelGrid columns="1" rendered="#{!login.loggedIn}">
+                                    <h:panelGrid columns="1" >
                                         <h:messages/>
                                         <div class="form-group">
                                             <p:inputText
-                                                value="#{credentials.name}" placeholder="Itemname..."
-                                                styleClass="form-username form-control" id="form-username"
-                                                validator="#{itemManager.validateRemoveName}"/>
+                                                value="#{itemManager.name}" placeholder="Itemname..."
+                                                styleClass="form-username form-control" id="form-username"/>
                                         </div>
                                        
                                     </h:panelGrid>
-                                    <h:commandButton id="login" value="Sign in"
+                                    <h:commandButton id="login" value="Remove"
                                                      action="#{itemManager.removeItem}"
                                                      styleClass="button"/>
                                 </h:form>
                             </div>
                         </div>
                     </div>
+                    </div>
+                </div><!--/.row-->
+            </div>	<!--/.main-->
+            <script src="assets/js/jquery-1.11.1.min.js"></script>
+            <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+            <script src="assets/js/chart.min.js"></script>
+            <script src="assets/js/chart-data.js"></script>
+            <script src="assets/js/easypiechart.js"></script>
+            <script src="assets/js/easypiechart-data.js"></script>
+            <script src="assets/bootstrap/js/bootstrap-datepicker.js"></script>
+            <script>
+                $('#calendar').datepicker({
+                });
 
-                </div>
-            </div>
+                !function ($) {
+                    $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
+                        $(this).find('em:first').toggleClass("glyphicon-minus");
+                    });
+                    $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+                }(window.jQuery);
 
-        </div>
-
-        <!-- Javascript -->
-        <script src="assets/js/jquery-1.11.1.min.js"></script>
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.backstretch.min.js"></script>
-        <script src="assets/js/scripts.js"></script>
-
-        <!--[if lt IE 10]>
-            <script src="assets/js/placeholder.js"></script>
-        <![endif]-->
-
-    </h:body>
+                $(window).on('resize', function () {
+                    if ($(window).width() > 768)
+                        $('#sidebar-collapse').collapse('show')
+                })
+            </script>
+        </h:body>
+    </f:view>
 </html>
-
 

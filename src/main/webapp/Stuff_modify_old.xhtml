@@ -22,7 +22,7 @@ limitations under the License.
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:composite="http://java.sun.com/jsf/composite">
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <h:head>
         <title>PrimeFaces and Boostrap test</title>
         <!-- CSS -->
@@ -46,30 +46,50 @@ limitations under the License.
 
         <!-- Top content -->
         <div class="top-content">
+
             <div class="inner-bg">
                 <div class="container">
                     <h:messages />
+                    <p:dataTable id="dataTable" var="u" value="#{userManager.stuffs}" rows="5" paginator="true">
+                        <f:facet name="header">Users List</f:facet>
+                        <p:column headerText="UserName">#{u.username}</p:column>
+                        <p:column headerText="Passowrd">#{u.password}</p:column>
+                        <p:column headerText="Email">#{u.email}</p:column>
+                        <f:facet name="footer">
+                            In total there are #{fn:length(userManager.stuffs)} Stuffs.
+                        </f:facet>
+                    </p:dataTable>
+                    <p:blockUI block="dataTable" trigger="dataTable">
+                        LOADING...<br />
+                        <p:graphicImage value="/assets/img/loading/loading.gif" />
+                    </p:blockUI>
                     <div class="row">
-                        <ui:composition>
-                            <composite:interface>
-                                <composite:attribute name="value" required="true"/>
-                                <composite:attribute name="completionItems" required="true"/>
-                            </composite:interface>
-                            <composite:implementation>
-                                <h:outputScript library="javascript" name="prototype-1.6.0.2.js" target="head"/>
-                                <h:outputScript library="javascript" name="autoComplete.js" target="head"/>
-                                <h:inputText id="input" value="#{cc.attrs.value}"
-                                             valueChangeListener="#{autocompleteListener.valueChanged}"
-                                             onkeyup="com.corejsf.updateCompletionItems(this, event)"
-                                             onblur="com.corejsf.inputLostFocus(this)"/>
-                                <h:selectOneListbox id="listbox" style="display: none"
-                                                    valueChangeListener="#{autocompleteListener.completionItemSelected}"
-                                                    onfocus="com.corejsf.listboxGainedFocus()">
-                                    <f:selectItems value="#{cc.attrs.completionItems}"/>
-                                    <f:ajax render="input"/>    
-                                </h:selectOneListbox>
-                            </composite:implementation>
-                        </ui:composition>
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1>
+                                <strong>314Lab</strong> Management
+                            </h1>
+                            <div class="description">
+                                <p>Power of All of 314!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h:form>
+                            <p>名称</p>
+                            <h:selectOneMenu title="stuff_edit" id="stuff_edit"
+                                             value="#{userManager.currentstuffname}">
+                                <f:selectItem itemLabel="--选择用户--" />
+                                <f:selectItems value="#{userManager.allStuffName}" var="StuffName"
+                                               itemValue="#{StuffName}" itemLabel="#{StuffName}" />
+                            </h:selectOneMenu>
+                            <br />
+                            <h:inputText value="#{userManager.password}" /><br/>
+                            <h:inputText value="#{userManager.email}" />
+                            <br />
+                            <h:commandButton action="#{userManager.editStuff}" id="submit_edit"
+                                             value="Edit Stuff" />
+                        </h:form>
                     </div>
                 </div>
             </div>
