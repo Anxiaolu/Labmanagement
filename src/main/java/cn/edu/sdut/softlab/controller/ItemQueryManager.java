@@ -256,6 +256,10 @@ public class ItemQueryManager {
         return queryitemList;
     }
 
+	/**
+	 *
+	 * 不定条件提交查询
+	 */
     public void getValidateParameters(ComponentSystemEvent event) throws ParseException {
         UIComponent source = event.getComponent();
         UIInput categoryidComponent = (UIInput) source.findComponent("categoryid");
